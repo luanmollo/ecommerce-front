@@ -1,0 +1,10 @@
+.btn {
+    background-color: var(--back2);
+    color: var(--font);
+    font-size: smaller;
+}
+
+.btn:hover {
+    background-color: var(--font);
+    color: var(--back2);
+}

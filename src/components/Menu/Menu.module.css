@@ -1,0 +1,51 @@
+.menu {
+    display : flex;
+    flex-direction : row ;
+    justify-content : space-around;
+    flex-flow : wrap;
+    
+    width: 100%;
+    height: auto;
+}
+
+.menu .card {
+    background-color: white;
+
+    border: .5vh solid var(--back2);
+    border-radius: 5%;
+
+    height: 40vh;
+    width: 40vh;
+
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+
+    text-align: center;
+    color: var(--font);
+    font-weight: 500;
+
+    box-shadow: 0 4px 8px 0 rgba(10, 48, 68, 0.2), 0 6px 20px 0 rgba(10, 48, 68, 0.19);
+}
+
+.card .imgBox {
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.imgBox img {
+    max-height: 100%;
+    width: auto;
+}
+
+@media screen and (max-width:1200px) {
+    .card {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .card {
+        width: 90%;
+    }
+}
