@@ -10,11 +10,13 @@ import { Sucursales } from "../components/Sucursales/Sucursales";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<RootLayout/>}>
-            <Route path="menu/:id?" element={<Menu/>} />
             <Route index element={<Empresas />} />
             <Route path="sucursales/:id?" element={<Sucursales />} />
+
+            <Route path="menu/:id?" element={<Menu/>} />
             <Route path="cat/:id?" element={<SubMenu />} />
             <Route path="detalle/:id?" element={<DetalleMenu />} />
+            
             <Route path="carrito" element={<Carrito/>} />
         </Route>
     )

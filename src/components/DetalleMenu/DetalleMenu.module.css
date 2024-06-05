@@ -13,13 +13,32 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 2%;
-    margin: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .header p {
     color: var(--mainColor);
-    font-weight: bold;
+    font-weight: 400;
+    font-size: larger;
+}
+
+.addToCart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2%;
+    margin: 2%;
+    height: auto;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.body {
+    height: 80%;
+    width: 100%;
+    text-align: center;
 }
 
 .row {
