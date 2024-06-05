@@ -13,20 +13,35 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 2%;
-    margin: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .header p {
     color: var(--mainColor);
+<<<<<<< Updated upstream
     font-weight: bold;
 }
 
 .row {
+=======
+    font-size: larger;
+    font-weight: 400;
+}
+
+.body {
+    height: 80%;
+    width: 100%;
+    text-align: center;
+}
+
+.addToCart {
+>>>>>>> Stashed changes
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+<<<<<<< Updated upstream
 
     padding: 2%;
     margin: 2%;
@@ -38,3 +53,9 @@
     border: 1px solid;
     border-radius: 5px;
 }
+=======
+    gap: 2;
+}
+
+
+>>>>>>> Stashed changes

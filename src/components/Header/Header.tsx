@@ -10,7 +10,7 @@ export const Header = () => {
           El Buen Sabor
         </div>
         <div className={styles.links}>
-          <Link to="/">Menu</Link>
+          <Link to="menu">Menu</Link>
           <Link to="carrito">Carrito</Link>
         </div>
     </div>
