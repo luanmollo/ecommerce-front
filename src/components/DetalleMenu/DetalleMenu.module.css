@@ -21,3 +21,20 @@
     color: var(--mainColor);
     font-weight: bold;
 }
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 2%;
+    margin: 2%;
+}
+
+.inputNumber{
+    width: 60px;
+    height: auto;
+    border: 1px solid;
+    border-radius: 5px;
+}

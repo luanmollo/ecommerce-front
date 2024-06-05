@@ -6,11 +6,30 @@ export const Menu = () => {
   return (
     <div className={styles.menu}>
       {
-        <Link to="cat" className={styles.card}>
-          <div className={styles.imgBox} ><img src={imagen}></img></div>
-          CATEGORIA A
-        </Link>
+        <>
+
+          <Link to="/cat" className={styles.card}>
+            <div className={styles.imgBox}><img src={imagen}></img></div>
+            CATEGORIA A
+          </Link>
+
+          <Link to="/cat" className={styles.card}>
+            <div className={styles.imgBox}><img src={imagen}></img></div>
+            CATEGORIA B
+          </Link>
+
+          <Link to="/cat" className={styles.card}>
+            <div className={styles.imgBox}><img src={imagen}></img></div>
+            CATEGORIA C
+          </Link>
+
+
+        </>
+
+
       }
     </div>
+
+
   )
 }
