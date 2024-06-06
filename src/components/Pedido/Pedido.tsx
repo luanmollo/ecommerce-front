@@ -61,7 +61,7 @@ export const Pedido = () => {
             <form onSubmit={handleSubmit} className="container w-50">
                 {section === 1 && (
                     <div>
-                        <h2>Sección 1: Datos del Cliente</h2>
+                        <h2>Datos del Cliente</h2>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Nombre</label>
                             <input
@@ -102,7 +102,7 @@ export const Pedido = () => {
 
                 {section === 2 && (
                     <div>
-                        <h2>Sección 2: Método de Entrega</h2>
+                        <h2>Método de Entrega</h2>
                         <div className="mb-3">
                             <label className="form-check-label">¿Retira el pedido en el local?</label>
                             <input
@@ -119,7 +119,7 @@ export const Pedido = () => {
 
                 {section === 3 && (
                     <div>
-                        <h2>Sección 3: Método de Pago</h2>
+                        <h2>Método de Pago</h2>
                         <div className="mb-3">
                             <label htmlFor="paymentMethod" className="form-label">Forma de Pago</label>
                             <select
