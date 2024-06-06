@@ -37,3 +37,13 @@ export interface Pedido extends Base {
     cliente: Cliente,
     detallePedidos: DetallePedido[]
 }
+
+export function calcularTotal(detalles: DetallePedido[]) : number {
+    var tot = 0;
+
+    detalles.forEach((detalle: DetallePedido) => {
+        tot = tot + detalle.subTotal;
+    });
+
+    return tot;
+}

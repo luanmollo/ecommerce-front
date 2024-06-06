@@ -5,7 +5,7 @@ export interface ArticuloInsumo extends Base {
     denominacion: string;
     precioVenta: number;
     habilitado: boolean;
-    codigo: boolean;
-    imagenes: IImagen[];
+    codigo: string;
+    imagenes?: IImagen[];
     esParaElaborar: boolean;
 }
