@@ -1,7 +1,6 @@
-import { BotonAgregar } from "../BotonAgregar/BotonAgregar"
 import { BotonVolver } from "../BotonVolver/BotonVolver"
 import styles from "../DetalleMenu/DetalleMenu.module.css"
-import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
+import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody, Button } from "react-bootstrap"
 import { GenericGallery } from "../GenericGallery/GenericGallery"
 import { useParams } from "react-router-dom"
 import { FC, useEffect, useState } from "react"
@@ -10,6 +9,8 @@ import { ArticuloManufacturadoService } from "../../services/ArticuloManufactura
 import { ArticuloInsumo } from "../../types/Articulos/ArticuloInsumo"
 import { ArticuloInsumoService } from "../../services/ArticuloInsumoService"
 import formatPrice from "../../types/format/priceFormat"
+import { DetallePedido } from "../../types/Pedidos/DetallePedido"
+import { useCarrito } from "../../hooks/useCarrito"
 
 interface IPropsDetalleMenu {
   service: ArticuloManufacturadoService | ArticuloInsumoService
@@ -19,6 +20,7 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
   service 
 }) => {
   const { id } = useParams();
+  const carrito = useCarrito();
 
   const [producto, setProducto] = useState<ArticuloManufacturado | ArticuloInsumo | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -34,6 +36,22 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
     setShowModal(true);
   };
 
+  const handleAddToCart = () => {
+    if(producto){
+      var subTotal = producto?.precioVenta * cantidad;
+      //console.log(subTotal)
+      var detalle: DetallePedido = {
+        id: 0,
+        eliminado: false,
+        cantidad: cantidad,
+        subTotal: subTotal,
+        articulo: producto
+      }
+
+      carrito.addItemCart(detalle);
+    }
+  }
+
   const addCantidad = () => {
     var aux: number = cantidad + 1;
     setCantidad(aux);
@@ -41,8 +59,8 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
 
   const substractCantidad = () => {
     if(cantidad > 0) {
-        var aux: number = cantidad - 1;
-        setCantidad(aux);
+      var aux: number = cantidad - 1;
+      setCantidad(aux);
     }
   };
 
@@ -84,7 +102,9 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
                     <p>{cantidad}</p>
                     <button type="button" onClick={addCantidad}>+</button>
                 </div>
-                <BotonAgregar />
+                <Button variant="success" onClick={handleAddToCart} >
+                  Agregar al carrito
+                </Button>
             </ModalBody>
         </Modal>
       </div>

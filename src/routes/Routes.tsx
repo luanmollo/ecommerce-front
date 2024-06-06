@@ -8,7 +8,6 @@ import { Empresas } from "../components/Empresas/Empresas";
 import { Sucursales } from "../components/Sucursales/Sucursales";
 import { ArticuloManufacturadoService } from "../services/ArticuloManufacturadoService";
 import { ArticuloInsumoService } from "../services/ArticuloInsumoService";
-import { Pedido } from "../components/Pedido/Pedido";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,16 +21,18 @@ const router = createBrowserRouter(
             <Route path="detalle/otro/:id?" element={<DetalleMenu service={new ArticuloInsumoService()}/>} />
             
             <Route path="carrito" element={<Carrito/>} />
-            <Route path="pedido" element={<Pedido/>} />
         </Route>
+        
     )
 );
 
 export const AppRoutes = () => {
     return (
         <>
+        <Suspense fallback={<Loader/>}>
             <RouterProvider router={router}>
             </RouterProvider>
+        </Suspense>
         </>
     )
 }

@@ -4,6 +4,7 @@
 
 .mainBox {
     background-color: white;
+    color: var(--font);
     box-shadow: 0 4px 8px 0 rgba(10, 48, 68, 0.2), 0 6px 20px 0 rgba(10, 48, 68, 0.19);
 }
 
@@ -14,20 +15,39 @@
     justify-content: space-between;
 
     padding: 2%;
-    margin: 2%;
 }
 
 .header p {
     color: var(--mainColor);
     font-weight: bold;
+    font-size: x-large;
+}
+
+.table {
+    text-align: center;
+    font-size: large;
+}
+
+.table hr {
+    width:98%;
+    text-align: center;
+    margin-left: 2vh;
+}
+
+.vacio {
+    text-align: center;
+    font-size: larger;
+    padding-bottom: 2%;
 }
 
 .row {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: row;
+}
 
-    padding: 2%;
-    margin: 2%;
+.total {
+    color: var(--mainColor);
+    font-weight: bold;
 }

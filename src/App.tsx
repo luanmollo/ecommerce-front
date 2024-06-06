@@ -1,10 +1,13 @@
 import './App.css'
+import { CartContextProvider } from './context/CarritoContext'
 import { AppRoutes } from './routes/Routes'
 
 function App() {
   return (
     <>
-      <AppRoutes/>
+      <CartContextProvider>
+        <AppRoutes/>
+      </CartContextProvider>
     </>
   )
 }
