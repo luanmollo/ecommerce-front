@@ -26,9 +26,9 @@ export const Empresas = () => {
           empresas?.map((empresa: Empresa) => (
             <Link key={empresa.id} to={`sucursales/${empresa.id}`} className={styles.card} onClick={() => handleSelect(empresa.id)}>
               <div className={styles.imgBox} >
-                <img src={empresa.logo} />
+                <img src={`src/img/${empresa.logo}`} />
               </div>
-              {empresa.nombre}
+              <p>{empresa.nombre}</p>
             </Link>
           ))
         :null

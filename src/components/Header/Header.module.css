@@ -47,6 +47,10 @@
     margin: 0;
 }
 
+.brand:hover{
+    cursor: pointer;
+}
+
 .selectBox select {
     background-color: var(--back2);
 }

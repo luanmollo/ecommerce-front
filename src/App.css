@@ -4,10 +4,10 @@
   height: 100%;
 
   --backgroundColor: rgb(226, 221, 192);
-  --back2: rgb(239, 232, 188);
-  --mainColor: rgb(255, 111, 21);
+  --back2: rgb(255, 253, 247);
+  --mainColor: rgb(239, 117, 91);
   --accentsColor: rgb(189, 183, 107);
-  --font: rgb(10, 48, 68);
+  --font: rgb(10, 48, 24);
 
   background-color: var(--back2);
 }

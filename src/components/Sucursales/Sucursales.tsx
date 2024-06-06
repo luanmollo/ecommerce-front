@@ -25,7 +25,7 @@ export const Sucursales = () => {
           sucursales?.map((sucursal: Sucursal) => (
             <Link key={sucursal.id} to={`/menu/${sucursal.id}`} className={styles.card} onClick={() => handleSelect(sucursal.id)}>
               <div className={styles.imgBox} >
-                <img src={sucursal.logo} />
+                <img src={`/src/img/${sucursal.logo}`} />
               </div>
               {sucursal.nombre}<br/>
             </Link>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styles from "../Header/Header.module.css"
 import logo from "../../img/logoNoName.png"
 /*import { Form } from "react-bootstrap"
@@ -16,6 +16,7 @@ export const getSucursal = () => {
 
 export const Header = () => {
 
+  const navigate = useNavigate();
   //const [sucursales, setSucursales] = useState<Sucursal[]>();
   //const service = new SucursalService();
 
@@ -33,9 +34,15 @@ export const Header = () => {
     localStorage.setItem("sucursalId", value);
   }*/
 
+   const handleBrandClick = () => {
+    localStorage.removeItem("empresaId");
+    localStorage.removeItem("sucursalId");
+    navigate("/");
+   }
+
   return (
     <div className={styles.header}>
-        <div className={styles.brand}>
+        <div className={styles.brand} onClick={handleBrandClick}>
           <img className={styles.logo} src={logo}/>
           El Buen Sabor
         </div>
@@ -54,10 +61,13 @@ export const Header = () => {
           </div>
           : null
             */}
-        <div className={styles.links}>
-          <Link to={`menu/${getSucursal()}`}>Menu</Link>
-          <Link to="carrito">Carrito</Link>
-        </div>
+        { getSucursal()? 
+          <div className={styles.links}>
+            <Link to={`menu/${getSucursal()}`}>Menu</Link>
+            <Link to="carrito">Carrito</Link>
+          </div>
+          :null
+        }
     </div>
   )
 }

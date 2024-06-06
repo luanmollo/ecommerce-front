@@ -6,7 +6,7 @@ export class ArticuloInsumoService extends BackendClient<ArticuloInsumo> {
     protected baseUrl: string = base + "articulosInsumos";
 
     async getByCategoria(categoriaId: number): Promise<ArticuloInsumo[] | undefined> {
-        const response = await fetch(`${this.baseUrl}//${categoriaId}`);
+        const response = await fetch(`${this.baseUrl}/buscar/noElaborados/${categoriaId}`);
         if (!response.ok) {
           return undefined;
         }
