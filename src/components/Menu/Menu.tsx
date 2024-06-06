@@ -3,16 +3,18 @@ import imagen from "../../img/logoBackgroundRemoved.png"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Categoria } from "../../types/Articulos/Categoria"
-import { CategoriaService } from "../../services/CategoriaService"
+//import { CategoriaService } from "../../services/CategoriaService"
+import { SucursalService } from "../../services/SucursalService"
 
 export const Menu = () => {
   const { id } = useParams();
   const [categorias, setCategorias] = useState<Categoria[]>([]);
 
-  const service = new CategoriaService();
+  //const service = new CategoriaService();
+  const sucursalService = new SucursalService();
 
   useEffect(() => {
-    service.getBySucursalId(Number(id)).then((data) => 
+    sucursalService.getCategoriasBySucursalId(Number(id)).then((data) => 
       data != undefined ? setCategorias(data) : setCategorias([])
     );
   }, []);
@@ -21,7 +23,7 @@ export const Menu = () => {
     <div className={styles.menu}>
       { categorias.length != 0 ?
           categorias.map((categoria: Categoria) => (
-            <Link key={categoria.id} to={`cat/${categoria.id}`} className={styles.card}>
+            <Link key={categoria.id} to={`/cat/${categoria.id}`} className={styles.card}>
               <div className={styles.imgBox} >
                 <img src={imagen} />
               </div>

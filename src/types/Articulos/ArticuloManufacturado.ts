@@ -7,5 +7,6 @@ export interface ArticuloManufacturado extends Base {
     tiempoEstimadoMinutos: number,
     habilitado: boolean,
     codigo: string,
-    imagenes: IImagen[]
+    imagenes: IImagen[],
+    precioVenta: number
 }

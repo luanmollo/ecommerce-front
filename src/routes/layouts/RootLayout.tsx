@@ -3,7 +3,7 @@ import { Header } from "../../components/Header/Header"
 
 export const RootLayout = () => {
   return (
-    <div>
+    <div style={{height: "100vh"}}>
         <Header />
         <div className="page">
             <Outlet/>

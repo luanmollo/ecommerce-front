@@ -10,7 +10,7 @@ export const Sucursales = () => {
   const service = new SucursalService();
 
   useEffect(() => {
-    service.getAll().then((data) => 
+    service.getByEmpresaId(Number(id)).then((data) => 
       data!=undefined ? setSucursales(data) : setSucursales([])
     );
   }, []);
@@ -23,12 +23,11 @@ export const Sucursales = () => {
     <div className={styles.menu}>
       { sucursales?.length!=0 ?
           sucursales?.map((sucursal: Sucursal) => (
-            <Link key={sucursal.id} to={`menu/${sucursal.id}`} className={styles.card} onClick={() => handleSelect(sucursal.id)}>
+            <Link key={sucursal.id} to={`/menu/${sucursal.id}`} className={styles.card} onClick={() => handleSelect(sucursal.id)}>
               <div className={styles.imgBox} >
                 <img src={sucursal.logo} />
               </div>
               {sucursal.nombre}<br/>
-              {sucursal.domicilio.toString()}
             </Link>
           ))
           : null

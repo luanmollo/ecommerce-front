@@ -1,15 +1,17 @@
 import { AbstractBackendClient } from "./AbstractBackendClient";
 
- export const base: string = "http://localhost:8082/api/";
+ export const base: string = "http://localhost:8092/";
 
   export abstract class BackendClient<T> extends AbstractBackendClient<T> {
 
+    //getAllByBajaFalse
   async getAll(): Promise<T[]> {
     const response = await fetch(`${this.baseUrl}`);
     const data = await response.json();
     return data as T[];
   }
 
+  //getById
   async getById(id: number): Promise<T | undefined> {
     const response = await fetch(`${this.baseUrl}/${id}`);
     if (!response.ok) {
@@ -19,8 +21,9 @@ import { AbstractBackendClient } from "./AbstractBackendClient";
     return data as T;
   }
 
+  //create
   async post(data: T): Promise<T> {
-    const response = await fetch(`${this.baseUrl}/create`, {
+    const response = await fetch(`${this.baseUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,6 +34,7 @@ import { AbstractBackendClient } from "./AbstractBackendClient";
     return newData as T;
   }
 
+  //edit
   async put(id: number, data: T): Promise<T> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "PUT",
@@ -43,6 +47,7 @@ import { AbstractBackendClient } from "./AbstractBackendClient";
     return newData as T;
   }
 
+  //deleteById
   async delete(id: number): Promise<void> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: "DELETE",
