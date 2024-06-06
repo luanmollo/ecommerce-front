@@ -22,19 +22,19 @@ export const Carrito = () => {
           carrito.cart.length!=0 ?
             <div className={styles.table}>
               <Row>
-                <Col>
+                <Col className={styles.tdata}>
                   <p>CÓDIGO</p>
                 </Col>
-                <Col>
+                <Col className={styles.tdata}>
                   <p>ARTICULO</p>
                 </Col>
-                <Col>
+                <Col className={styles.tdata}>
                   <p>CANTIDAD</p>
                 </Col>
-                <Col>
+                <Col className={styles.tdata}>
                   <p>SUBTOTAL</p>
                 </Col>
-                <Col>
+                <Col className={styles.tdata}>
                   <p>REMOVER</p>
                 </Col>
                 <hr/>

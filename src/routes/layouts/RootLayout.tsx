@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom"
 import { Header } from "../../components/Header/Header"
-/*import { useCarrito } from "../../hooks/useCarrito"
+import { useCarrito } from "../../hooks/useCarrito"
 import { useEffect } from "react"
 import { ArticuloInsumo } from "../../types/Articulos/ArticuloInsumo"
 import { ArticuloManufacturado } from "../../types/Articulos/ArticuloManufacturado"
-import { DetallePedido } from "../../types/Pedidos/DetallePedido"*/
+import { DetallePedido } from "../../types/Pedidos/DetallePedido"
 
-/*const pizza: ArticuloManufacturado = {
+const pizza: ArticuloManufacturado = {
   denominacion: "Pizza",
   descripcion: "descripcion",
   tiempoEstimadoMinutos: 15,
@@ -41,11 +41,11 @@ const detalle2: DetallePedido = {
   cantidad: 6,
   subTotal: 12000,
   articulo: coquita
-}*/
+}
 
 
 export const RootLayout = () => {
-  /*const carrito = useCarrito();
+  const carrito = useCarrito();
 
   const instert1 = async () => {
     await carrito.addItemCart(detalle1);
@@ -58,7 +58,7 @@ export const RootLayout = () => {
   useEffect(() => {
     instert1();
     instert2();
-  }, [])*/
+  }, [])
 
   return (
     <div style={{height: "100vh"}}>

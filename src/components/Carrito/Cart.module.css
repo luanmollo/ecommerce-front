@@ -51,3 +51,53 @@
     color: var(--mainColor);
     font-weight: bold;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .table {
+        text-align: center;
+        font-size: small;
+    }
+    
+    .table hr {
+        width:94%;
+        text-align: center;
+        margin-left: 3vh;
+    }
+
+    .table .tdata {
+        padding: 0;
+        margin: 0;
+        border: 0;
+    }
+
+    .table button {
+        font-size: small;
+        margin-right: 2vh;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .table {
+        text-align: center;
+        font-size: medium;
+    }
+    
+    .table hr {
+        width:97%;
+        text-align: center;
+        margin-left: 2vh;
+    }
+
+    .table .tdata {
+        padding: 0;
+        margin: 0;
+        border: 0;
+    }
+
+    .table button {
+        font-size: medium;
+        margin-right: 2vh;
+    }
+}
