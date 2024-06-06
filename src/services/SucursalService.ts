@@ -5,6 +5,7 @@ import { Categoria } from "../types/Articulos/Categoria";
 export class SucursalService extends BackendClient<Sucursal> {
     protected baseUrl: string = base + "sucursales";
 
+    //no está en el back
     async getCategoriasBySucursalId(sucursalId: number): Promise<Categoria[] | undefined> {
         const response = await fetch(`${this.baseUrl}/categorias/${sucursalId}`);
         if (!response.ok) {

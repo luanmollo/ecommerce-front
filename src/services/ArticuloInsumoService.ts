@@ -5,8 +5,8 @@ import { BackendClient, base } from "./BackendClient";
 export class ArticuloInsumoService extends BackendClient<ArticuloInsumo> {
     protected baseUrl: string = base + "articulosInsumos";
 
-    async getByCategoria(categoriaId: number): Promise<ArticuloInsumo[] | undefined> {
-        const response = await fetch(`${this.baseUrl}/buscar/noElaborados/${categoriaId}`);
+    async getByCategoria(categoriaDenominacion: string, sucursalId: Number): Promise<ArticuloInsumo[] | undefined> {
+        const response = await fetch(`${this.baseUrl}/buscar/noElaborados/${categoriaDenominacion}/${sucursalId}`);
         if (!response.ok) {
           return undefined;
         }
