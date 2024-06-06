@@ -1,0 +1,23 @@
+.main {
+    height: 100%;
+    width: 100%;
+    
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 5vh;
+}
+
+.main img {
+    height: 20rem;
+    width: 20rem;
+}
+
+.main p {
+    color: var(--font);
+    font-size:xx-large;
+    font-weight: 500;
+}
