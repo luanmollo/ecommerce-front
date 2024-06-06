@@ -1,5 +1,5 @@
 import { Base } from "../Base";
-import { Domicilio } from "../Domicilio";
+import { Domicilio } from "../Domicilio/Domicilio";
 
 export interface Sucursal extends Base {
     nombre: string,
