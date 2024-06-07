@@ -10,7 +10,7 @@ import { ArticuloManufacturadoService } from "../services/ArticuloManufacturadoS
 import { ArticuloInsumoService } from "../services/ArticuloInsumoService";
 import { Suspense, lazy } from "react";
 import { Loader } from "../components/Loader/Loader";
-import { Pedido } from "../components/Pedido/Pedido";
+import { PedidoFormulario, clienteLoader } from "../components/Pedido/PedidoFormulario";
 import { subMenuLoader } from "../components/SubMenu/SubMenu";
 
 const Sucursales = lazy(() => import("../components/Sucursales/Sucursales"));
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
             <Route path="detalle/otro/:id?" element={<DetalleMenu service={new ArticuloInsumoService()}/>} />
             
             <Route path="carrito" element={<Carrito/>} />
-            <Route path="pedido" element={<Pedido/>} />
+            <Route path="pedido" element={<PedidoFormulario/>} loader={clienteLoader} />
         </Route>
         
     )

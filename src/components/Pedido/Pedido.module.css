@@ -1,0 +1,33 @@
+.formContainer {
+    padding: 5%;
+}
+
+.formContainer button {
+    margin-right: 2%;
+}
+
+.formContainer label {
+    font-size: large;
+}
+
+.formContainer .radioDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 2%;
+    width: 100%;
+}
+
+.btnDiv {
+    width: 100%;
+}
+
+.realizadoDiv p {
+    font-size: larger;
+}
+
+.realizadoDiv .exito {
+    display: inline;
+    color: rgb(54, 172, 54);
+}

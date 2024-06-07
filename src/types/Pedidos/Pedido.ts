@@ -30,11 +30,27 @@ export interface Pedido extends Base {
     tipoEnvio: TipoEnvio,
     formaPago: FormaPago,
     fechaPedido: Date,
-    domicilio: Domicilio,
+    domicilio?: Domicilio,
     sucursal: Sucursal,
     //factura: Factura,
     //empleado: Empleado,
     cliente: Cliente,
+    detallePedidos: DetallePedido[]
+}
+
+export interface PedidoPost {
+    horaEstimadaFinalizacion: string, //cambiar por hora
+    total: number,
+    totalCosto: number,
+    estado: Estado,
+    tipoEnvio: TipoEnvio,
+    formaPago: FormaPago,
+    fechaPedido: Date,
+    domicilio?: Domicilio,
+    sucursal: number,
+    //factura: Factura,
+    //empleado: Empleado,
+    cliente: number,
     detallePedidos: DetallePedido[]
 }
 
