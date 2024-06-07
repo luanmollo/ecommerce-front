@@ -22,7 +22,6 @@ export const Menu = () => {
   const handleClickCategoria = (cat: Categoria) => {
     if(cat.subCategorias?.length!=0) {
       navigate(`/subMenu/${cat.id}`)
-      console.log(cat.denominacion + " tiene hijos")
     } else {
       navigate(`/productos/${cat.id}`);
     }

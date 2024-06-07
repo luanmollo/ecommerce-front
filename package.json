@@ -12,6 +12,7 @@
   "dependencies": {
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-react": "^2.2.1",
+    "@mercadopago/sdk-react": "^0.0.19",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.6",
     "react": "^18.2.0",

@@ -8,18 +8,23 @@ import { Domicilio } from "../../types/Domicilio/Domicilio";
 import { formatDomicilio } from "../../types/format/formatDomicilio";
 //import { ClienteService } from "../../services/ClienteService";
 import { PedidoService } from "../../services/PedidoService";
-import { Estado, FormaPago, Pedido, PedidoPost, TipoEnvio } from "../../types/Pedidos/Pedido";
+import { Pedido, PedidoPost } from "../../types/Pedidos/Pedido";
 import { getSucursal } from "../Header/Header";
+import { CheckoutMP } from "../MercadoPago/CheckoutMP";
+import { PreferenceMP } from "../../types/MercadoPago/PreferenceMP";
+import { DetallePedido, DetallePedidoPost } from "../../types/Pedidos/DetallePedido";
 
 export const PedidoFormulario = () => {
     const carrito = useCarrito();
     const cliente = useLoaderData() as Cliente;
     const service = new PedidoService();
 
-    const [section, setSection] = useState(1);
     const [envio, setEnvio] = useState<boolean>(false);
     const [realizado, setRealizado] = useState<boolean>(false);
+    const [mercadoPagoID, setMercadoPagoID] = useState<PreferenceMP>();
     const [newPedido, setNewPedido] = useState<Pedido | undefined>();
+
+    const [section, setSection] = useState(1);
     const [formData, setFormData] = useState({
         address: '',
         pickup: false,
@@ -40,8 +45,6 @@ export const PedidoFormulario = () => {
         } else {
             setSection(section + 1);
         }
-
-        console.log(envio);
     };
 
     const handlePrevSection = () => {
@@ -86,48 +89,67 @@ export const PedidoFormulario = () => {
         }
 
         //Generar el pedido
-        console.log('Formulario enviado', formData);
 
-        var newTipoEnvio: TipoEnvio;
+        var newTipoEnvio: string;
         if(formData.pickup===true)
-            {newTipoEnvio = TipoEnvio.TAKE_AWAY;}
+            {newTipoEnvio = "TAKE_AWAY";}
         else
-            {newTipoEnvio = TipoEnvio.DELIVERY;}
+            {newTipoEnvio = "DELIVERY";}
 
-        var newFormaPago: FormaPago;
+        var newFormaPago: string;
 
         if(formData.paymentMethod=="cash")
-            {newFormaPago = FormaPago.EFECTIVO}
+            {newFormaPago = "EFECTIVO"}
         else 
-            {newFormaPago = FormaPago.MERCADO_PAGO}
+            {newFormaPago = "MERCADO_PAGO"}
 
-        var domicilioSelected: Domicilio = cliente.domicilios[0];
+        var domicilioSelected = null;
         cliente.domicilios.some((dom: Domicilio) => {
             domicilioSelected = dom; return dom.id = Number(formData.address);
         })
 
-        var newPedido: PedidoPost = {
-            horaEstimadaFinalizacion: "",
-            total: 0,
-            totalCosto: 0,
+        var detalles: DetallePedidoPost[] = [];
+        carrito.cart.forEach((d: DetallePedido) =>
+            detalles.push({cantidad: d.cantidad, idArticulo: d.articulo.id})
+        );
 
-            fechaPedido: new Date(),
-            
-            estado: Estado.PREPARACION,
-            tipoEnvio: newTipoEnvio,
-            formaPago: newFormaPago,
-            domicilio: domicilioSelected,
-            sucursal: Number(getSucursal()),
-            cliente: cliente.id,
-            detallePedidos: carrito.cart
+        if(domicilioSelected!=null){
+            var newPedido: PedidoPost = {
+                fechaPedido: new Date(),
+                estado: "PREPARACION",
+                tipoEnvio: newTipoEnvio,
+                formaPago: newFormaPago,
+                domicilio: domicilioSelected,
+                idSucursal: Number(getSucursal()),
+                idCliente: cliente.id,
+                detallePedidos: detalles
+            }
+        } else {
+            var newPedido: PedidoPost = {
+                fechaPedido: new Date(),
+                estado: "PREPARACION",
+                tipoEnvio: newTipoEnvio,
+                formaPago: newFormaPago,
+                idSucursal: Number(getSucursal()),
+                idCliente: cliente.id,
+                detallePedidos: detalles
+            }
         }
-
-        var aux: Pedido = await service.create(newPedido);
         
+        var aux: Pedido | undefined = await service.create(newPedido);
+
         if(aux != undefined) {
             setNewPedido(aux);
-            setSection(0);
-            setRealizado(true);
+
+            if(formData.paymentMethod==="mercadoPago") {
+                var mpId = await service.getPreferenceMP(aux);
+                console.log(mpId);
+                setMercadoPagoID(mpId);
+                setSection(4);
+            } else {
+                setSection(0);
+                setRealizado(true);
+            }
         } else {
             Swal.fire({
                 title: "Error",
@@ -213,6 +235,12 @@ export const PedidoFormulario = () => {
                                 }
                             </select>
                         </div>
+                    </div>
+                )}
+
+                { section === 4 && mercadoPagoID!=undefined && (
+                    <div>
+                        <CheckoutMP preferencedId={mercadoPagoID} />
                     </div>
                 )}
 

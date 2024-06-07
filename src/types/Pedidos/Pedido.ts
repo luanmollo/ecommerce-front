@@ -2,14 +2,14 @@ import { Base } from "../Base";
 import { Domicilio } from "../Domicilio/Domicilio";
 import { Sucursal } from "../Empresa/Sucursal";
 import { Cliente } from "../Personas/Cliente";
-import { DetallePedido } from "./DetallePedido";
+import { DetallePedido, DetallePedidoPost } from "./DetallePedido";
 
 export enum Estado {
     PREPARACION,
     PENDIENTE,
     CANCELADO,
     RECHAZADO,
-    ENTREGADOS
+    ENTREGADO
 }
 
 export enum TipoEnvio {
@@ -39,19 +39,14 @@ export interface Pedido extends Base {
 }
 
 export interface PedidoPost {
-    horaEstimadaFinalizacion: string, //cambiar por hora
-    total: number,
-    totalCosto: number,
-    estado: Estado,
-    tipoEnvio: TipoEnvio,
-    formaPago: FormaPago,
+    estado: string,
+    tipoEnvio: string,
+    formaPago: string,
     fechaPedido: Date,
     domicilio?: Domicilio,
-    sucursal: number,
-    //factura: Factura,
-    //empleado: Empleado,
-    cliente: number,
-    detallePedidos: DetallePedido[]
+    idSucursal: number,
+    idCliente: number,
+    detallePedidos: DetallePedidoPost[]
 }
 
 export function calcularTotal(detalles: DetallePedido[]) : number {

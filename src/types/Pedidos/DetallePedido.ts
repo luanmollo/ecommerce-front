@@ -8,6 +8,11 @@ export interface DetallePedido extends Base {
     articulo: ArticuloInsumo | ArticuloManufacturado
 }
 
+export interface DetallePedidoPost {
+    cantidad: number,
+    idArticulo: number
+}
+
 export function calcularSubtotal(detalle: DetallePedido): number {
     return detalle.articulo.precioVenta * detalle.cantidad;
 }

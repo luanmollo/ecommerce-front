@@ -6,7 +6,6 @@ import { DetallePedido } from "../../types/Pedidos/DetallePedido"
 import { useNavigate } from "react-router-dom"
 import formatPrice from "../../types/format/priceFormat"
 import { calcularTotal } from "../../types/Pedidos/Pedido"
-import { getSucursal } from "../Header/Header"
 
 export const Carrito = () => {
   const carrito = useCarrito();
