@@ -1,6 +1,6 @@
 import { BotonVolver } from "../BotonVolver/BotonVolver"
 import styles from "../DetalleMenu/DetalleMenu.module.css"
-import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody, Button } from "react-bootstrap"
+import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody, Button, ModalFooter } from "react-bootstrap"
 import { GenericGallery } from "../GenericGallery/GenericGallery"
 import { useParams } from "react-router-dom"
 import { FC, useEffect, useState } from "react"
@@ -24,7 +24,7 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
 
   const [producto, setProducto] = useState<ArticuloManufacturado | ArticuloInsumo | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [cantidad, setCantidad] = useState<number>(0);
+  const [cantidad, setCantidad] = useState<number>(1);
 
   useEffect(() => {
     service.getById(Number(id)).then((data) => {
@@ -49,6 +49,7 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
       }
 
       carrito.addItemCart(detalle);
+      setShowModal(false);
     }
   }
 
@@ -58,7 +59,7 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
   };
 
   const substractCantidad = () => {
-    if(cantidad > 0) {
+    if(cantidad > 1) {
       var aux: number = cantidad - 1;
       setCantidad(aux);
     }
@@ -72,42 +73,46 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
             <div className={styles.mainBox}>
                 <div className={styles.header}>
                     <p>{producto?.denominacion}</p>
-                    <BotonVolver />
+                    <BotonVolver route={"/cat/"+producto.categoria.id} />
                 </div>
                 <div className={styles.body}>
-                    <Row>
-                        <Col>
+                    <Row className={styles.content}>
+                        <Col className="mb-4">
                             <GenericGallery imagenes={producto?.imagenes}></GenericGallery>
                         </Col>
                         <Col>
                             {"descripcion" in producto ? producto.descripcion : null}<br/>
-                            {formatPrice(producto?.precioVenta)}
+                            <p className={styles.price}>{formatPrice(producto?.precioVenta)}</p>
+                            <div className={styles.addToCart}>
+                              <button type="button" onClick={handleAdd}>+</button>
+                            </div>
                         </Col>
-                    </Row>
-                    <Row className={styles.addToCart} >
-                        <button type="button" onClick={handleAdd}>+</button>
                     </Row>
                 </div>
             </div>
         : null
         }
-        <Modal show={showModal}>
-            <ModalHeader>
+        <Modal centered show={showModal} onHide={() => setShowModal(false)}>
+            <ModalHeader closeButton>
                 <ModalTitle>Añadir {producto?.denominacion} al carrito</ModalTitle>
             </ModalHeader>
-            <ModalBody>
-                Elija la cantidad: 
-                <div className={styles.addToCart}>
+            <ModalBody className={styles.modalBody}>
+                <p>Elija la cantidad: </p>
+                <div className={styles.cantidad}>
                     <button type="button" onClick={substractCantidad}>-</button>
                     <p>{cantidad}</p>
                     <button type="button" onClick={addCantidad}>+</button>
                 </div>
-                <Button variant="success" onClick={handleAddToCart} >
-                  Agregar al carrito
-                </Button>
             </ModalBody>
+            <ModalFooter>
+              <Button variant="success" onClick={handleAddToCart} >
+                Agregar al carrito
+              </Button>
+            </ModalFooter>
         </Modal>
       </div>
     </div>
   )
 }
+
+export default DetalleMenu;

@@ -20,19 +20,24 @@ export const Empresas = () => {
   }
 
   return (
-    <div className={styles.menu}>
-      {
-        empresas?.length!=0 ?
-          empresas?.map((empresa: Empresa) => (
-            <Link key={empresa.id} to={`sucursales/${empresa.id}`} className={styles.card} onClick={() => handleSelect(empresa.id)}>
-              <div className={styles.imgBox} >
-                <img src={`src/img/${empresa.logo}`} />
-              </div>
-              <p>{empresa.nombre}</p>
-            </Link>
-          ))
-        :null
-      }
+    <div>
+      <div className={styles.header}>
+        Seleccione una empresa
+      </div>
+      <div className={styles.menu}>
+        {
+          empresas?.length!=0 ?
+            empresas?.map((empresa: Empresa) => (
+              <Link key={empresa.id} to={`sucursales/${empresa.id}`} className={styles.card} onClick={() => handleSelect(empresa.id)}>
+                <div className={styles.imgBox} >
+                  <img src={`src/img/${empresa.logo}`} />
+                </div>
+                <p>{empresa.nombre}</p>
+              </Link>
+            ))
+          :null
+        }
+      </div>
     </div>
   )
 }

@@ -2,9 +2,12 @@
     background-color: var(--back2);
     color: var(--font);
     font-size: smaller;
+    border-radius: 5%;
+    border-color: var(--font);
 }
 
 .btn:hover {
-    background-color: var(--font);
+    background-color: var(--mainColor);
+    border-color: var(--mainColor);
     color: var(--back2);
 }

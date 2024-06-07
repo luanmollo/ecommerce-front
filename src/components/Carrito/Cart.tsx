@@ -6,6 +6,7 @@ import { DetallePedido } from "../../types/Pedidos/DetallePedido"
 import { useNavigate } from "react-router-dom"
 import formatPrice from "../../types/format/priceFormat"
 import { calcularTotal } from "../../types/Pedidos/Pedido"
+import { getSucursal } from "../Header/Header"
 
 export const Carrito = () => {
   const carrito = useCarrito();
@@ -16,7 +17,7 @@ export const Carrito = () => {
       <div className={styles.mainBox}>
         <div className={styles.header}>
           <p>Mi Carrito</p>
-          <BotonVolver />
+          <BotonVolver route={"/menu/"+getSucursal()} />
         </div>
         {
           carrito.cart.length!=0 ?

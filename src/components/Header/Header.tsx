@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import styles from "../Header/Header.module.css"
 import logo from "../../img/logoNoName.png"
+import { useCarrito } from "../../hooks/useCarrito";
 /*import { Form } from "react-bootstrap"
 import { useEffect, useState } from "react"
 import { Sucursal } from "../../types/Empresa/Sucursal"
@@ -15,7 +16,7 @@ export const getSucursal = () => {
 }
 
 export const Header = () => {
-
+  const carrito = useCarrito();
   const navigate = useNavigate();
   //const [sucursales, setSucursales] = useState<Sucursal[]>();
   //const service = new SucursalService();
@@ -37,6 +38,7 @@ export const Header = () => {
    const handleBrandClick = () => {
     localStorage.removeItem("empresaId");
     localStorage.removeItem("sucursalId");
+    carrito.cleanCart();
     navigate("/");
    }
 

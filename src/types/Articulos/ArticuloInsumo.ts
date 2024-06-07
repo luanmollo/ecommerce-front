@@ -1,5 +1,6 @@
 import { Base } from "../Base";
 import { IImagen } from "../Imagen";
+import { Categoria } from "./Categoria";
 
 export interface ArticuloInsumo extends Base {
     denominacion: string;
@@ -8,4 +9,5 @@ export interface ArticuloInsumo extends Base {
     codigo: string;
     imagenes?: IImagen[];
     esParaElaborar: boolean;
+    categoria: Categoria
 }
