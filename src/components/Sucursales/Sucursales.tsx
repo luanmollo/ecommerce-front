@@ -24,7 +24,7 @@ export const Sucursales = () => {
     <div>
       <div className={styles.header}>
         <p>Seleccione una sucursal</p>
-        <BotonVolver route={"/"} />
+        <BotonVolver/>
       </div>
       <div className={styles.menu}>
         { sucursales?.length!=0 ?

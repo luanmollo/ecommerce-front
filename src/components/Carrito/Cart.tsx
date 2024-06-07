@@ -17,7 +17,7 @@ export const Carrito = () => {
       <div className={styles.mainBox}>
         <div className={styles.header}>
           <p>Mi Carrito</p>
-          <BotonVolver route={"/menu/"+getSucursal()} />
+          <BotonVolver/>
         </div>
         {
           carrito.cart.length!=0 ?

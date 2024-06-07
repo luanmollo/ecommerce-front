@@ -1,87 +1,56 @@
 import styles from "../Menu/Menu.module.css"
-import { Link, useLoaderData } from "react-router-dom"
-import { useEffect, useState } from "react";
-import { ArticuloManufacturadoService } from "../../services/ArticuloManufacturadoService";
-import { ArticuloManufacturado } from "../../types/Articulos/ArticuloManufacturado";
-import { ArticuloInsumoService } from "../../services/ArticuloInsumoService";
-import { ArticuloInsumo } from "../../types/Articulos/ArticuloInsumo";
-import { Categoria } from "../../types/Articulos/Categoria";
-import { CategoriaService } from "../../services/CategoriaService";
-import { getSucursal } from "../Header/Header";
-import { LoaderFunction } from "react-router-dom";
-import { BotonVolver } from "../BotonVolver/BotonVolver";
+import imagen from "../../img/logoBackgroundRemoved.png"
+import { useNavigate, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Categoria } from "../../types/Articulos/Categoria"
+import { BotonVolver } from "../BotonVolver/BotonVolver"
+import { CategoriaService } from "../../services/CategoriaService"
 
 export const SubMenu = () => {
-  const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
-  const [otros, setOtros] = useState<ArticuloInsumo[]>([]);
-  const categoria: Categoria = useLoaderData() as Categoria;
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [subCategorias, setSubCategorias] = useState<Categoria[]>([]);
 
-  const insumoService = new ArticuloInsumoService();
-  const service = new ArticuloManufacturadoService();
+  const service = new CategoriaService();
 
-  const idSucursal = getSucursal();
+  const loadSubCateorias = async () =>{
+    var catPadre = await service.getById(Number(id));
+    if(catPadre?.subCategorias) setSubCategorias(catPadre?.subCategorias);
+  }
 
   useEffect(() => {
-    service.getByCategoria(String(categoria?.denominacion), Number(idSucursal)).then((data) => (
-      data != undefined ? setProductos(data) : setProductos([])
-    ));
-    insumoService.getByCategoria(String(categoria?.denominacion), Number(idSucursal)).then((data) => {
-      data != undefined ? setOtros(data) : setOtros([])
-    });
-
-
+    loadSubCateorias();
   }, []);
+
+  const handleClickCategoria = (cat: Categoria) => {
+    if(cat.subCategorias?.length!=0) {
+      navigate(`/subMenu/${cat.id}`)
+    } else {
+      navigate(`/productos/${cat.id}`);
+    }
+  }
 
   return (
     <div>
       <div className={styles.header}>
         <p></p>
-        <BotonVolver route={"/menu/"+getSucursal()} />
+        <BotonVolver/>
       </div>
       <div className={styles.menu}>
-        {productos.length != 0 ?
-          productos.map((producto: ArticuloManufacturado) =>
-            <Link key={producto.id} to={`/detalle/${producto.id}`} className={styles.card}>
-              <div className={styles.imgBox}>
-                <img src={producto.imagenes? producto.imagenes[0].url:""} />
-              </div>
-              {producto.denominacion}
-            </Link>
-          )
-          : null
-        }
-        {
-          otros.length != 0 ?
-            otros.map((otro: ArticuloInsumo) =>
-              <Link key={otro.id} to={`/detalle/otro/${otro.id}`} className={styles.card}>
-                <div className={styles.imgBox}>
-                  <img src={otro.imagenes? otro.imagenes[0].url: ""} />
+        { subCategorias.length != 0 ?
+            subCategorias.map((categoria: Categoria) => (
+              <div onClick={() => handleClickCategoria(categoria)} key={categoria.id} className={styles.card}>
+                <div className={styles.imgBox} >
+                  <img src={imagen} />
                 </div>
-                {otro.denominacion}
-              </Link>
-            )
-            : null
+                {categoria.denominacion}
+              </div>
+            ))        
+          : null
         }
       </div>
     </div>
   )
-}
-
-
-type ReferralParams = {
-  id?: string;
-}
-
-export const subMenuLoader: LoaderFunction = async ({params}) => {
-  const { id } = params as ReferralParams;
-  const service = new CategoriaService();
-
-  if(id) {
-    var res = await service.getById(Number(id));
-    return res;
-  } else {
-    return {id:0, eliminado:false, denominacion:"", esInsumo: false}
-  }
 }
 
 export default SubMenu;

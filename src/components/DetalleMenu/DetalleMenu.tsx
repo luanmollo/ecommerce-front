@@ -1,21 +1,30 @@
-import { BotonAgregar } from "../BotonAgregar/BotonAgregar"
 import { BotonVolver } from "../BotonVolver/BotonVolver"
 import styles from "../DetalleMenu/DetalleMenu.module.css"
-import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
+import { Row, Col, Modal, ModalHeader, ModalTitle, ModalBody, Button, ModalFooter } from "react-bootstrap"
 import { GenericGallery } from "../GenericGallery/GenericGallery"
 import { useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { ArticuloManufacturado } from "../../types/Articulos/ArticuloManufacturado"
 import { ArticuloManufacturadoService } from "../../services/ArticuloManufacturadoService"
+import { ArticuloInsumo } from "../../types/Articulos/ArticuloInsumo"
+import { ArticuloInsumoService } from "../../services/ArticuloInsumoService"
+import formatPrice from "../../types/format/priceFormat"
+import { DetallePedido } from "../../types/Pedidos/DetallePedido"
+import { useCarrito } from "../../hooks/useCarrito"
 
-export const DetalleMenu = () => {
+interface IPropsDetalleMenu {
+  service: ArticuloManufacturadoService | ArticuloInsumoService
+}
+
+export const DetalleMenu : FC<IPropsDetalleMenu> = ({ 
+  service 
+}) => {
   const { id } = useParams();
+  const carrito = useCarrito();
 
-  const [producto, setProducto] = useState<ArticuloManufacturado | null>(null);
+  const [producto, setProducto] = useState<ArticuloManufacturado | ArticuloInsumo | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [cantidad, setCantidad] = useState<number>(0);
-
-  const service = new ArticuloManufacturadoService();
+  const [cantidad, setCantidad] = useState<number>(1);
 
   useEffect(() => {
     service.getById(Number(id)).then((data) => {
@@ -27,65 +36,83 @@ export const DetalleMenu = () => {
     setShowModal(true);
   };
 
+  const handleAddToCart = () => {
+    if(producto){
+      var subTotal = producto?.precioVenta * cantidad;
+      //console.log(subTotal)
+      var detalle: DetallePedido = {
+        id: 0,
+        eliminado: false,
+        cantidad: cantidad,
+        subTotal: subTotal,
+        articulo: producto
+      }
+
+      carrito.addItemCart(detalle);
+      setShowModal(false);
+    }
+  }
+
   const addCantidad = () => {
     var aux: number = cantidad + 1;
     setCantidad(aux);
   };
 
   const substractCantidad = () => {
-    if(cantidad > 0) {
-        var aux: number = cantidad - 1;
-        setCantidad(aux);
+    if(cantidad > 1) {
+      var aux: number = cantidad - 1;
+      setCantidad(aux);
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.mainBox}>
-        <div className={styles.header}>
-          <p>COD</p>
-          <p>DENOMINACION</p>
-          <p>CANTIDAD</p>
-          <BotonVolver />
-        </div>
         {
         producto? 
             <div className={styles.mainBox}>
                 <div className={styles.header}>
                     <p>{producto?.denominacion}</p>
-                    <BotonVolver />
+                    <BotonVolver/>
                 </div>
                 <div className={styles.body}>
-                    <Row>
-                        <Col>
+                    <Row className={styles.content}>
+                        <Col className="mb-4">
                             <GenericGallery imagenes={producto?.imagenes}></GenericGallery>
                         </Col>
                         <Col>
-                            {producto?.descripcion}
+                            {"descripcion" in producto ? producto.descripcion : null}<br/>
+                            <p className={styles.price}>{formatPrice(producto?.precioVenta)}</p>
+                            <div className={styles.addToCart}>
+                              <button type="button" onClick={handleAdd}>+</button>
+                            </div>
                         </Col>
-                    </Row>
-                    <Row className={styles.addToCart} >
-                        <button type="button" onClick={handleAdd}>+</button>
                     </Row>
                 </div>
             </div>
         : null
         }
-        <Modal show={showModal}>
-            <ModalHeader>
+        <Modal centered show={showModal} onHide={() => setShowModal(false)}>
+            <ModalHeader closeButton>
                 <ModalTitle>Añadir {producto?.denominacion} al carrito</ModalTitle>
             </ModalHeader>
-            <ModalBody>
-                Elija la cantidad: 
-                <div className={styles.addToCart}>
+            <ModalBody className={styles.modalBody}>
+                <p>Elija la cantidad: </p>
+                <div className={styles.cantidad}>
                     <button type="button" onClick={substractCantidad}>-</button>
                     <p>{cantidad}</p>
                     <button type="button" onClick={addCantidad}>+</button>
                 </div>
-                <BotonAgregar />
             </ModalBody>
+            <ModalFooter>
+              <Button variant="success" onClick={handleAddToCart} >
+                Agregar al carrito
+              </Button>
+            </ModalFooter>
         </Modal>
       </div>
     </div>
   )
 }
+
+export default DetalleMenu;

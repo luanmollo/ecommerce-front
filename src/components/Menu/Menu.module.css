@@ -69,3 +69,7 @@
 
     font-size: larger;
 }
+
+.card:hover{
+    cursor: pointer;
+}
