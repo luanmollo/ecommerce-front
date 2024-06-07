@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../Pedido/Pedido.module.css"
 import { useCarrito } from "../../hooks/useCarrito";
 import Swal from "sweetalert2";
@@ -13,6 +13,33 @@ import { getSucursal } from "../Header/Header";
 import { CheckoutMP } from "../MercadoPago/CheckoutMP";
 import { PreferenceMP } from "../../types/MercadoPago/PreferenceMP";
 import { DetallePedido, DetallePedidoPost } from "../../types/Pedidos/DetallePedido";
+//import { Sucursal } from "../../types/Empresa/Sucursal";
+import { SucursalService } from "../../services/SucursalService";
+
+const domicilio: Domicilio = {
+    "id": 3,
+    "eliminado": false,
+    "calle": "Cangallo",
+    "numero": 800,
+    "piso": 0,
+    "cp": 5519,
+    "nroDpto": 1,
+    "localidad": {
+        "id": 1,
+        "eliminado": false,
+        "nombre": "Luján de Cuyo",
+        "provincia": {
+            "id": 1,
+            "eliminado": false,
+            "nombre": "Mendoza",
+            "pais": {
+                "id": 1,
+                "eliminado": false,
+                "nombre": "Argentina"
+            }
+        }
+    }
+}
 
 export const PedidoFormulario = () => {
     const carrito = useCarrito();
@@ -24,12 +51,18 @@ export const PedidoFormulario = () => {
     const [mercadoPagoID, setMercadoPagoID] = useState<PreferenceMP>();
     const [newPedido, setNewPedido] = useState<Pedido | undefined>();
 
+    const [domicilioSucursal, setDomicilioSucursal] = useState<Domicilio | undefined>();
+
     const [section, setSection] = useState(1);
     const [formData, setFormData] = useState({
         address: '',
         pickup: false,
         paymentMethod: ''
     });
+    
+    useEffect(() => {
+        setDomicilioSucursal(domicilio);
+    })
 
     const handleNextSection = () => {
         if (section === 2 && (!formData.address)) {
@@ -113,7 +146,7 @@ export const PedidoFormulario = () => {
             detalles.push({cantidad: d.cantidad, idArticulo: d.articulo.id})
         );
 
-        if(domicilioSelected!=null){
+        if(newTipoEnvio === "DELIVERY" && domicilioSelected!=null){
             var newPedido: PedidoPost = {
                 fechaPedido: new Date(),
                 estado: "PREPARACION",
@@ -124,18 +157,25 @@ export const PedidoFormulario = () => {
                 idCliente: cliente.id,
                 detallePedidos: detalles
             }
+            console.log(domicilioSelected as Domicilio);
         } else {
+            console.log(domicilioSucursal);
             var newPedido: PedidoPost = {
                 fechaPedido: new Date(),
                 estado: "PREPARACION",
                 tipoEnvio: newTipoEnvio,
                 formaPago: newFormaPago,
+                domicilio: domicilioSucursal,
                 idSucursal: Number(getSucursal()),
                 idCliente: cliente.id,
                 detallePedidos: detalles
             }
+            console.log(domicilioSucursal?.id);
         }
         
+        
+        
+        console.log(JSON.stringify(newPedido));
         var aux: Pedido | undefined = await service.create(newPedido);
 
         if(aux != undefined) {
@@ -143,7 +183,6 @@ export const PedidoFormulario = () => {
 
             if(formData.paymentMethod==="mercadoPago") {
                 var mpId = await service.getPreferenceMP(aux);
-                console.log(mpId);
                 setMercadoPagoID(mpId);
                 setSection(4);
             } else {
@@ -245,7 +284,7 @@ export const PedidoFormulario = () => {
                 )}
 
                 <div className={styles.btnDiv + " mb-3"}>
-                    {section > 1 && (
+                    {section > 1 && section!=4 && (
                         <button type="button" className="btn btn-primary" onClick={handlePrevSection}>Volver</button>
                     )}
                     {section < 3 && section != 0 && (
@@ -259,11 +298,11 @@ export const PedidoFormulario = () => {
             {realizado &&
                 <div className={styles.realizadoDiv}>
                     <h2>Su pedido fue realizado con <p className={styles.exito}>éxito</p></h2>
-                    { envio ?
+                    {/* envio ?
                         <p>Tiempo estimado para retirar: {newPedido?.horaEstimadaFinalizacion}</p>
                         :
                         <p>Tiempo estimado del delivery: {newPedido?.horaEstimadaFinalizacion}</p>
-                    }
+                    */}
                 </div>
             }
         </div>

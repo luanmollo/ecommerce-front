@@ -9,6 +9,8 @@ import { Loader } from "../components/Loader/Loader";
 import { PedidoFormulario, clienteLoader } from "../components/Pedido/PedidoFormulario";
 import { menuProductosLoader } from "../components/MenuProductos/MenuProductos";
 import SubMenu from "../components/SubMenu/SubMenu";
+import { PageNotFound } from "../components/PageNotFound/PageNotFound";
+import { AfterPaymentMP } from "../components/MercadoPago/AfterPaymentMP";
 
 const Sucursales = lazy(() => import("../components/Sucursales/Sucursales"));
 const Menu = lazy(() => import("../components/Menu/Menu"));
@@ -30,6 +32,9 @@ const router = createBrowserRouter(
             
             <Route path="carrito" element={<Carrito/>} />
             <Route path="pedido" element={<PedidoFormulario/>} loader={clienteLoader} />
+            <Route path="*" element={<PageNotFound/>} />
+
+            <Route path="mp/:state" element={<AfterPaymentMP/>}/>
         </Route>
         
     )
