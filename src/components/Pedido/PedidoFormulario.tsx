@@ -78,6 +78,8 @@ export const PedidoFormulario = () => {
         } else {
             setSection(section + 1);
         }
+
+        console.log(formData.pickup)
     };
 
     const handlePrevSection = () => {
@@ -124,7 +126,7 @@ export const PedidoFormulario = () => {
         //Generar el pedido
 
         var newTipoEnvio: string;
-        if(formData.pickup===true)
+        if(formData.pickup)
             {newTipoEnvio = "TAKE_AWAY";}
         else
             {newTipoEnvio = "DELIVERY";}
@@ -159,7 +161,7 @@ export const PedidoFormulario = () => {
             }
             console.log(domicilioSelected as Domicilio);
         } else {
-            console.log(domicilioSucursal);
+            console.log("Retiro" + domicilioSucursal);
             var newPedido: PedidoPost = {
                 fechaPedido: new Date(),
                 estado: "PREPARACION",
