@@ -1,11 +1,12 @@
 import { AbstractBackendClient } from "./AbstractBackendClient";
 
- export const base: string = "http://localhost:8092/";
+export const base: string = "http://localhost:8092/";
 
-  export abstract class BackendClient<T> extends AbstractBackendClient<T> {
+export abstract class BackendClient<T> extends AbstractBackendClient<T> {
 
-    //getAllByBajaFalse
+  //getAllByBajaFalse
   async getAll(): Promise<T[]> {
+
     const response = await fetch(`${this.baseUrl}`);
     const data = await response.json();
     return data as T[];
@@ -23,6 +24,7 @@ import { AbstractBackendClient } from "./AbstractBackendClient";
 
   //create
   async post(data: T): Promise<T> {
+
     const response = await fetch(`${this.baseUrl}`, {
       method: "POST",
       headers: {
@@ -30,6 +32,13 @@ import { AbstractBackendClient } from "./AbstractBackendClient";
       },
       body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+      // Si la respuesta no es exitosa, lanzar un error con el mensaje de error
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error desconocido');
+    }
+
     const newData = await response.json();
     return newData as T;
   }

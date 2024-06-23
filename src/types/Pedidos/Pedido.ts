@@ -39,7 +39,7 @@ export interface Pedido extends Base {
 }
 
 export interface PedidoPost {
-    estado: string,
+    estadoPedido: string,
     tipoEnvio: string,
     formaPago: string,
     fechaPedido: Date,

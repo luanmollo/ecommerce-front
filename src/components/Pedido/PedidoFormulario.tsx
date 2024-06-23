@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../Pedido/Pedido.module.css"
 import { useCarrito } from "../../hooks/useCarrito";
 import Swal from "sweetalert2";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { Form, LoaderFunction, useLoaderData } from "react-router-dom";
 import { Cliente } from "../../types/Personas/Cliente";
 import { Domicilio } from "../../types/Domicilio/Domicilio";
 import { formatDomicilio } from "../../types/format/formatDomicilio";
@@ -17,6 +17,11 @@ import { DetallePedido, DetallePedidoPost } from "../../types/Pedidos/DetallePed
 import { SucursalService } from "../../services/SucursalService";
 import { ClienteService } from "../../services/ClienteService";
 import Usuario from "../../types/Usuario";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
+import { DomicilioForm } from "./DomicilioForm";
+
+
+
 
 const domicilio: Domicilio = {
     "id": 3,
@@ -43,6 +48,7 @@ const domicilio: Domicilio = {
     }
 }
 
+
 export const PedidoFormulario = () => {
     const carrito = useCarrito();
     const cliente = useLoaderData() as Cliente;
@@ -55,7 +61,12 @@ export const PedidoFormulario = () => {
 
     const [domicilioSucursal, setDomicilioSucursal] = useState<Domicilio | undefined>();
 
-    
+    const [showModal, setShowModal] = useState<boolean>(false);
+
+    const handleAgregarDomicilio = () => {
+        setShowModal(true);
+    };
+
 
     const [section, setSection] = useState(1);
     const [formData, setFormData] = useState({
@@ -63,7 +74,7 @@ export const PedidoFormulario = () => {
         pickup: false,
         paymentMethod: ''
     });
-    
+
     useEffect(() => {
         setDomicilioSucursal(domicilio);
     })
@@ -76,8 +87,8 @@ export const PedidoFormulario = () => {
             });
             return;
         }
-        
-        if( section === 1 && envio===true) {
+
+        if (section === 1 && envio === true) {
             setSection(section + 2);
         } else {
             setSection(section + 1);
@@ -87,7 +98,7 @@ export const PedidoFormulario = () => {
     };
 
     const handlePrevSection = () => {
-        if(section===3 && envio===true){
+        if (section === 3 && envio === true) {
             setSection(section - 2);
         } else {
             setSection(section - 1);
@@ -96,7 +107,7 @@ export const PedidoFormulario = () => {
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
-        
+
         setFormData({
             ...formData,
             [name]: value
@@ -110,12 +121,42 @@ export const PedidoFormulario = () => {
             ...formData,
             [name]: value
         });
-        if(value == "true")
+        if (value == "true")
             setEnvio(true);
-        else 
+        else
             setEnvio(false);
     };
 
+    //agregar domicilio
+
+    const closeModal = () => {
+        setShowModal(false);
+      }
+
+    // const DomicilioForm: React.FC = () => {
+    //     const [formAgregarDomicilioData, setFormAgregarDomicilioData] = useState({
+    //         calle: '',
+    //         cp: '',
+    //         nrodpto: '',
+    //         numero: '',
+    //         piso: '',
+    //         localidad: '',
+    //         provincia: '',
+    //         pais: ''
+    //     });
+
+    //     const handleAgregarDomicilioChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //         const { name, value } = event.target;
+    //         setFormAgregarDomicilioData({
+    //             ...formAgregarDomicilioData,
+    //             [name]: value
+    //         });
+    //     };
+
+    //     const handleAgregarDomicilioSubmit = () => { };
+
+
+    //formulario pedido
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
@@ -130,17 +171,13 @@ export const PedidoFormulario = () => {
         //Generar el pedido
 
         var newTipoEnvio: string;
-        if(formData.pickup)
-            {newTipoEnvio = "TAKE_AWAY";}
-        else
-            {newTipoEnvio = "DELIVERY";}
+        if (formData.pickup) { newTipoEnvio = "TAKE_AWAY"; }
+        else { newTipoEnvio = "DELIVERY"; }
 
         var newFormaPago: string;
 
-        if(formData.paymentMethod=="cash")
-            {newFormaPago = "EFECTIVO"}
-        else 
-            {newFormaPago = "MERCADO_PAGO"}
+        if (formData.paymentMethod == "cash") { newFormaPago = "EFECTIVO" }
+        else { newFormaPago = "MERCADO_PAGO" }
 
         var domicilioSelected = null;
         cliente.domicilios.some((dom: Domicilio) => {
@@ -149,13 +186,13 @@ export const PedidoFormulario = () => {
 
         var detalles: DetallePedidoPost[] = [];
         carrito.cart.forEach((d: DetallePedido) =>
-            detalles.push({cantidad: d.cantidad, idArticulo: d.articulo.id})
+            detalles.push({ cantidad: d.cantidad, idArticulo: d.articulo.id })
         );
 
-        if(newTipoEnvio === "DELIVERY" && domicilioSelected!=null){
+        if (newTipoEnvio === "DELIVERY" && domicilioSelected != null) {
             var newPedido: PedidoPost = {
                 fechaPedido: new Date(),
-                estado: "PREPARACION",
+                estadoPedido: "PREPARACION",
                 tipoEnvio: newTipoEnvio,
                 formaPago: newFormaPago,
                 domicilio: domicilioSelected,
@@ -168,7 +205,7 @@ export const PedidoFormulario = () => {
             console.log("Retiro" + domicilioSucursal);
             var newPedido: PedidoPost = {
                 fechaPedido: new Date(),
-                estado: "PREPARACION",
+                estadoPedido: "PREPARACION",
                 tipoEnvio: newTipoEnvio,
                 formaPago: newFormaPago,
                 domicilio: domicilioSucursal,
@@ -178,16 +215,16 @@ export const PedidoFormulario = () => {
             }
             console.log(domicilioSucursal?.id);
         }
-        
-        
-        
+
+
+
         console.log(JSON.stringify(newPedido));
         var aux: Pedido | undefined = await service.create(newPedido);
 
-        if(aux != undefined) {
+        if (aux != undefined) {
             setNewPedido(aux);
 
-            if(formData.paymentMethod==="mercadoPago") {
+            if (formData.paymentMethod === "mercadoPago") {
                 var mpId = await service.getPreferenceMP(aux);
                 setMercadoPagoID(mpId);
                 setSection(4);
@@ -199,7 +236,7 @@ export const PedidoFormulario = () => {
             Swal.fire({
                 title: "Error",
                 text: "Ocurrió un error",
-                icon: "error" 
+                icon: "error"
             })
         }
     };
@@ -207,7 +244,7 @@ export const PedidoFormulario = () => {
     return (
         <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} className="container w-50">
-                {section === 2 && envio==false && (
+                {section === 2 && envio == false && (
                     <div>
                         <h2>Seleccione el domicilio para la entrega</h2>
                         <div className="mb-3">
@@ -223,7 +260,24 @@ export const PedidoFormulario = () => {
                                     <option key={index} value={domicilio.id} label={formatDomicilio(domicilio)} />
                                 )}
                             </select>
+                            <button type="button" className="btn btn-primary" onClick={handleAgregarDomicilio}>Agregar domicilio</button>
                         </div>
+
+
+                        <Modal centered show={showModal} onHide={closeModal}>
+                            <ModalHeader closeButton>
+                                <ModalTitle>Agregar nuevo domicilio</ModalTitle>
+                            </ModalHeader>
+                            <ModalBody >
+                            <DomicilioForm closeModal={closeModal} />
+                               
+
+                            </ModalBody>
+                        </Modal>
+
+
+
+
                     </div>
                 )}
 
@@ -274,7 +328,7 @@ export const PedidoFormulario = () => {
                                 <option value="" label="Seleccione método de pago" />
                                 {envio ?
                                     <><option value="cash" label="Efectivo (10% de descuento)" />
-                                    <option value="mercadoPago" label="MercadoPago" /></>
+                                        <option value="mercadoPago" label="MercadoPago" /></>
                                     :
                                     <option value="mercadoPago" label="MercadoPago" />
                                 }
@@ -283,14 +337,14 @@ export const PedidoFormulario = () => {
                     </div>
                 )}
 
-                { section === 4 && mercadoPagoID!=undefined && (
+                {section === 4 && mercadoPagoID != undefined && (
                     <div>
                         <CheckoutMP preferencedId={mercadoPagoID} />
                     </div>
                 )}
 
                 <div className={styles.btnDiv + " mb-3"}>
-                    {section > 1 && section!=4 && (
+                    {section > 1 && section != 4 && (
                         <button type="button" className="btn btn-primary" onClick={handlePrevSection}>Volver</button>
                     )}
                     {section < 3 && section != 0 && (
@@ -315,48 +369,50 @@ export const PedidoFormulario = () => {
     )
 }
 
-export const clienteLoader: LoaderFunction = async () => {
+export const clienteLoader: LoaderFunction = async ({ params, request }) => {
+    const idUsuario = parseInt(params.idUsuario as string, 10);
 
-    // const [jsonUsuario, setJsonUsuario] = useState<any>(localStorage.getItem('usuario'))
-    // const usuarioLogueado: Usuario = JSON.parse(jsonUsuario) as Usuario;
 
-    const service = new ClienteService();
-    var res = await service.getById(1);
-    
-    // var res: Cliente = {
-    //     id: 1,
-    //     eliminado: false,
-    //     nombre: "Sebastian",
-    //     apellido: "Wilder",
-    //     telefono: "2615920825",
-    //     fechaNacimiento: new Date(),
-    //     domicilios: [
-    //         {
-    //             id: 3,
-    //             eliminado: false,
-    //             calle: "Cangallo",
-    //             numero: 800,
-    //             piso: 0,
-    //             cp: 5519,
-    //             nroDpto: 1,
-    //             localidad: {
-    //                 id: 1,
-    //                 eliminado: false,
-    //                 nombre: "Luján de Cuyo",
-    //                 provincia: {
-    //                     id: 1,
-    //                     eliminado: false,
-    //                     nombre: "Mendoza",
-    //                     pais: {
-    //                         id: 1,
-    //                         eliminado: false,
-    //                         nombre: "Argentina"
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     ]
-    // }
-    
+    // const service = new ClienteService();
+    // var res = await service.getByUserId(idUsuario);
+
+    // console.log(res);
+    // alert();
+
+    var res: Cliente = {
+        id: 1,
+        eliminado: false,
+        nombre: "Sebastian",
+        apellido: "Wilder",
+        telefono: "2615920825",
+        fechaNacimiento: new Date(),
+        domicilios: [
+            {
+                id: 3,
+                eliminado: false,
+                calle: "Cangallo",
+                numero: 800,
+                piso: 0,
+                cp: 5519,
+                nroDpto: 1,
+                localidad: {
+                    id: 1,
+                    eliminado: false,
+                    nombre: "Luján de Cuyo",
+                    provincia: {
+                        id: 1,
+                        eliminado: false,
+                        nombre: "Mendoza",
+                        pais: {
+                            id: 1,
+                            eliminado: false,
+                            nombre: "Argentina"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+
     return res;
 }

@@ -49,7 +49,7 @@ const router = createBrowserRouter(
                 <Route path="/historialPedidos" element={<HistorialPedidos />} />
             </Route>
 
-            <Route path="pedido" element={<PedidoFormulario />} loader={clienteLoader} />
+            <Route path="pedido/:idUsuario" element={<PedidoFormulario />} loader={clienteLoader} />
             <Route path="*" element={<PageNotFound />} />
 
             <Route path="mp/:state" element={<AfterPaymentMP />} />

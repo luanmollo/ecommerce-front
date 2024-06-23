@@ -82,7 +82,7 @@ export const Carrito = () => {
                           <p className={styles.total}>TOTAL: {formatPrice(calcularTotal(carrito.cart))}</p>
                         </Col>
                         <Col>
-                          <Button className="mb-4" variant="success" onClick={() => navigate("/pedido")}>
+                          <Button className="mb-4" variant="success" onClick={() => navigate("/pedido/" + usuarioLogueado?.id)}>
                             COMPRAR
                           </Button>
                         </Col>
