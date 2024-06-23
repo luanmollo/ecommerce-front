@@ -1,0 +1,54 @@
+#grilla-top{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+#grilla-top-0{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    align-items: center;
+}
+
+#link-grilla{
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 12px;
+}
+
+#link-grilla:hover{
+    background-color: rgba(128, 128, 128, 0.26);
+}
+
+#boton-filtrar{
+    width: 80px;
+    height: 30px;
+    color: black;
+   border-radius: 0 6px 6px 0;
+    border: 1px solid black;
+    background-color: white;
+}
+
+form{
+    display: flex;
+}
+
+#input-filtrar{
+    height: 30px;
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 6px 0 0 6px;
+    border-right: none;
+}
+
+
+.header-historialpedidos{
+    display: flex;
+    flex-direction: row;
+    margin: 24px;
+    justify-content: space-between;
+}

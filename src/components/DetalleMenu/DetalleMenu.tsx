@@ -11,13 +11,14 @@ import { ArticuloInsumoService } from "../../services/ArticuloInsumoService"
 import formatPrice from "../../types/format/priceFormat"
 import { DetallePedido } from "../../types/Pedidos/DetallePedido"
 import { useCarrito } from "../../hooks/useCarrito"
+import Usuario from "../../types/Usuario"
 
 interface IPropsDetalleMenu {
   service: ArticuloManufacturadoService | ArticuloInsumoService
 }
 
-export const DetalleMenu : FC<IPropsDetalleMenu> = ({ 
-  service 
+export const DetalleMenu: FC<IPropsDetalleMenu> = ({
+  service
 }) => {
   const { id } = useParams();
   const carrito = useCarrito();
@@ -26,18 +27,21 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
   const [showModal, setShowModal] = useState<boolean>(false);
   const [cantidad, setCantidad] = useState<number>(1);
 
+  const [jsonUsuario, setJsonUsuario] = useState<any>(localStorage.getItem('usuario'))
+  const usuarioLogueado: Usuario = JSON.parse(jsonUsuario) as Usuario;
+
   useEffect(() => {
     service.getById(Number(id)).then((data) => {
-        data != undefined ? setProducto(data) : setProducto(null)
+      data != undefined ? setProducto(data) : setProducto(null)
     });
   }, [])
-  
+
   const handleAdd = () => {
     setShowModal(true);
   };
 
   const handleAddToCart = () => {
-    if(producto){
+    if (producto) {
       var subTotal = producto?.precioVenta * cantidad;
       //console.log(subTotal)
       var detalle: DetallePedido = {
@@ -59,7 +63,7 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
   };
 
   const substractCantidad = () => {
-    if(cantidad > 1) {
+    if (cantidad > 1) {
       var aux: number = cantidad - 1;
       setCantidad(aux);
     }
@@ -69,46 +73,60 @@ export const DetalleMenu : FC<IPropsDetalleMenu> = ({
     <div className={styles.container}>
       <div className={styles.mainBox}>
         {
-        producto? 
+          producto ?
             <div className={styles.mainBox}>
-                <div className={styles.header}>
-                    <p>{producto?.denominacion}</p>
-                    <BotonVolver/>
-                </div>
-                <div className={styles.body}>
-                    <Row className={styles.content}>
-                        <Col className="mb-4">
-                            <GenericGallery imagenes={producto?.imagenes}></GenericGallery>
-                        </Col>
-                        <Col>
-                            {"descripcion" in producto ? producto.descripcion : null}<br/>
-                            <p className={styles.price}>{formatPrice(producto?.precioVenta)}</p>
-                            <div className={styles.addToCart}>
-                              <button type="button" onClick={handleAdd}>+</button>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
+              <div className={styles.header}>
+                <p>{producto?.denominacion}</p>
+                <BotonVolver />
+              </div>
+              <div className={styles.body}>
+                <Row className={styles.content}>
+                  <Col className="mb-4">
+                    <GenericGallery imagenes={producto?.imagenes}></GenericGallery>
+                  </Col>
+                  <Col>
+                    {"descripcion" in producto ? producto.descripcion : null}<br />
+                    <p className={styles.price}>{formatPrice(producto?.precioVenta)}</p>
+                    {
+                      (usuarioLogueado) ?
+                        <div>
+                          <div className={styles.addToCart}>
+                            <button type="button" onClick={handleAdd}>+</button>
+                          </div>
+                        </div>
+                        :
+                        <div>
+                          Debés iniciar sesión para comprar
+                        </div>
+                    }
+
+
+
+
+
+                  </Col>
+                </Row>
+              </div>
             </div>
-        : null
+            : null
         }
         <Modal centered show={showModal} onHide={() => setShowModal(false)}>
-            <ModalHeader closeButton>
-                <ModalTitle>Añadir {producto?.denominacion} al carrito</ModalTitle>
-            </ModalHeader>
-            <ModalBody className={styles.modalBody}>
-                <p>Elija la cantidad: </p>
-                <div className={styles.cantidad}>
-                    <button type="button" onClick={substractCantidad}>-</button>
-                    <p>{cantidad}</p>
-                    <button type="button" onClick={addCantidad}>+</button>
-                </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button variant="success" onClick={handleAddToCart} >
-                Agregar al carrito
-              </Button>
-            </ModalFooter>
+          <ModalHeader closeButton>
+            <ModalTitle>Añadir {producto?.denominacion} al carrito</ModalTitle>
+          </ModalHeader>
+          <ModalBody className={styles.modalBody}>
+            <p>Elija la cantidad: </p>
+            <div className={styles.cantidad}>
+              <button type="button" onClick={substractCantidad}>-</button>
+              <p>{cantidad}</p>
+              <button type="button" onClick={addCantidad}>+</button>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="success" onClick={handleAddToCart} >
+              Agregar al carrito
+            </Button>
+          </ModalFooter>
         </Modal>
       </div>
     </div>

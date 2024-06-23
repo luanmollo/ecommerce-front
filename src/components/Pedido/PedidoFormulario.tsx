@@ -15,6 +15,8 @@ import { PreferenceMP } from "../../types/MercadoPago/PreferenceMP";
 import { DetallePedido, DetallePedidoPost } from "../../types/Pedidos/DetallePedido";
 //import { Sucursal } from "../../types/Empresa/Sucursal";
 import { SucursalService } from "../../services/SucursalService";
+import { ClienteService } from "../../services/ClienteService";
+import Usuario from "../../types/Usuario";
 
 const domicilio: Domicilio = {
     "id": 3,
@@ -52,6 +54,8 @@ export const PedidoFormulario = () => {
     const [newPedido, setNewPedido] = useState<Pedido | undefined>();
 
     const [domicilioSucursal, setDomicilioSucursal] = useState<Domicilio | undefined>();
+
+    
 
     const [section, setSection] = useState(1);
     const [formData, setFormData] = useState({
@@ -312,43 +316,47 @@ export const PedidoFormulario = () => {
 }
 
 export const clienteLoader: LoaderFunction = async () => {
-    //const service = new ClienteService();
-    //var res = await service.getById(1);
+
+    // const [jsonUsuario, setJsonUsuario] = useState<any>(localStorage.getItem('usuario'))
+    // const usuarioLogueado: Usuario = JSON.parse(jsonUsuario) as Usuario;
+
+    const service = new ClienteService();
+    var res = await service.getById(1);
     
-    var res: Cliente = {
-        id: 1,
-        eliminado: false,
-        nombre: "Sebastian",
-        apellido: "Wilder",
-        telefono: "2615920825",
-        fechaNacimiento: new Date(),
-        domicilios: [
-            {
-                id: 3,
-                eliminado: false,
-                calle: "Cangallo",
-                numero: 800,
-                piso: 0,
-                cp: 5519,
-                nroDpto: 1,
-                localidad: {
-                    id: 1,
-                    eliminado: false,
-                    nombre: "Luján de Cuyo",
-                    provincia: {
-                        id: 1,
-                        eliminado: false,
-                        nombre: "Mendoza",
-                        pais: {
-                            id: 1,
-                            eliminado: false,
-                            nombre: "Argentina"
-                        }
-                    }
-                }
-            }
-        ]
-    }
+    // var res: Cliente = {
+    //     id: 1,
+    //     eliminado: false,
+    //     nombre: "Sebastian",
+    //     apellido: "Wilder",
+    //     telefono: "2615920825",
+    //     fechaNacimiento: new Date(),
+    //     domicilios: [
+    //         {
+    //             id: 3,
+    //             eliminado: false,
+    //             calle: "Cangallo",
+    //             numero: 800,
+    //             piso: 0,
+    //             cp: 5519,
+    //             nroDpto: 1,
+    //             localidad: {
+    //                 id: 1,
+    //                 eliminado: false,
+    //                 nombre: "Luján de Cuyo",
+    //                 provincia: {
+    //                     id: 1,
+    //                     eliminado: false,
+    //                     nombre: "Mendoza",
+    //                     pais: {
+    //                         id: 1,
+    //                         eliminado: false,
+    //                         nombre: "Argentina"
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     ]
+    // }
     
     return res;
 }
