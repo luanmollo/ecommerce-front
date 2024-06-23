@@ -19,34 +19,40 @@ import { ClienteService } from "../../services/ClienteService";
 import Usuario from "../../types/Usuario";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import { DomicilioForm } from "./DomicilioForm";
+import { DomicilioService } from "../../services/DomicilioService";
 
 
 
 
-const domicilio: Domicilio = {
-    "id": 3,
-    "eliminado": false,
-    "calle": "Cangallo",
-    "numero": 800,
-    "piso": 0,
-    "cp": 5519,
-    "nroDpto": 1,
-    "localidad": {
-        "id": 1,
-        "eliminado": false,
-        "nombre": "Luján de Cuyo",
-        "provincia": {
-            "id": 1,
-            "eliminado": false,
-            "nombre": "Mendoza",
-            "pais": {
-                "id": 1,
-                "eliminado": false,
-                "nombre": "Argentina"
-            }
-        }
-    }
-}
+// const domicilio: Domicilio = {
+//     "id": 3,
+//     "eliminado": false,
+//     "calle": "Cangallo",
+//     "numero": 800,
+//     "piso": 0,
+//     "cp": 5519,
+//     "nroDpto": 1,
+//     "localidad": {
+//         "id": 1,
+//         "eliminado": false,
+//         "nombre": "Luján de Cuyo",
+//         "provincia": {
+//             "id": 1,
+//             "eliminado": false,
+//             "nombre": "Mendoza",
+//             "pais": {
+//                 "id": 1,
+//                 "eliminado": false,
+//                 "nombre": "Argentina"
+//             }
+//         }
+//     }
+// }
+
+const domicilioService = new DomicilioService();
+var domicilio = await domicilioService.getBySucursalId(Number(getSucursal()));
+
+
 
 
 export const PedidoFormulario = () => {
@@ -131,7 +137,7 @@ export const PedidoFormulario = () => {
 
     const closeModal = () => {
         setShowModal(false);
-      }
+    }
 
     // const DomicilioForm: React.FC = () => {
     //     const [formAgregarDomicilioData, setFormAgregarDomicilioData] = useState({
@@ -269,8 +275,8 @@ export const PedidoFormulario = () => {
                                 <ModalTitle>Agregar nuevo domicilio</ModalTitle>
                             </ModalHeader>
                             <ModalBody >
-                            <DomicilioForm closeModal={closeModal} />
-                               
+                                <DomicilioForm closeModal={closeModal} />
+
 
                             </ModalBody>
                         </Modal>
@@ -373,46 +379,45 @@ export const clienteLoader: LoaderFunction = async ({ params, request }) => {
     const idUsuario = parseInt(params.idUsuario as string, 10);
 
 
-    // const service = new ClienteService();
-    // var res = await service.getByUserId(idUsuario);
+    const service = new ClienteService();
+    var res = await service.getByUserId(idUsuario);
 
-    // console.log(res);
-    // alert();
+    console.log(res);
 
-    var res: Cliente = {
-        id: 1,
-        eliminado: false,
-        nombre: "Sebastian",
-        apellido: "Wilder",
-        telefono: "2615920825",
-        fechaNacimiento: new Date(),
-        domicilios: [
-            {
-                id: 3,
-                eliminado: false,
-                calle: "Cangallo",
-                numero: 800,
-                piso: 0,
-                cp: 5519,
-                nroDpto: 1,
-                localidad: {
-                    id: 1,
-                    eliminado: false,
-                    nombre: "Luján de Cuyo",
-                    provincia: {
-                        id: 1,
-                        eliminado: false,
-                        nombre: "Mendoza",
-                        pais: {
-                            id: 1,
-                            eliminado: false,
-                            nombre: "Argentina"
-                        }
-                    }
-                }
-            }
-        ]
-    }
+    // var res: Cliente = {
+    //     id: 1,
+    //     eliminado: false,
+    //     nombre: "Sebastian",
+    //     apellido: "Wilder",
+    //     telefono: "2615920825",
+    //     fechaNacimiento: new Date(),
+    //     domicilios: [
+    //         {
+    //             id: 3,
+    //             eliminado: false,
+    //             calle: "Cangallo",
+    //             numero: 800,
+    //             piso: 0,
+    //             cp: 5519,
+    //             nroDpto: 1,
+    //             localidad: {
+    //                 id: 1,
+    //                 eliminado: false,
+    //                 nombre: "Luján de Cuyo",
+    //                 provincia: {
+    //                     id: 1,
+    //                     eliminado: false,
+    //                     nombre: "Mendoza",
+    //                     pais: {
+    //                         id: 1,
+    //                         eliminado: false,
+    //                         nombre: "Argentina"
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     ]
+    // }
 
     return res;
 }
