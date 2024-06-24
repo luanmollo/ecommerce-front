@@ -49,8 +49,7 @@ import { DomicilioService } from "../../services/DomicilioService";
 //     }
 // }
 
-const domicilioService = new DomicilioService();
-var domicilio = await domicilioService.getBySucursalId(Number(getSucursal()));
+
 
 
 
@@ -82,7 +81,14 @@ export const PedidoFormulario = () => {
     });
 
     useEffect(() => {
-        setDomicilioSucursal(domicilio);
+        async function getDomicilio() {
+            const domicilioService = new DomicilioService();
+            var domicilio = await domicilioService.getBySucursalId(Number(getSucursal()));
+            
+            setDomicilioSucursal(domicilio);
+        }
+
+        getDomicilio();
     })
 
     const handleNextSection = () => {
