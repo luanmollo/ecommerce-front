@@ -8,7 +8,6 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 // import { getProvinciasPorPaisId } from "../../AdminDashboard/DomicilioCrud/ProvinciasCrud";
 // import { Localidad } from "../../../types/Domicilio/Localidad";
 // import { getLocalidadesPorProvinciaId } from "../../AdminDashboard/DomicilioCrud/LocalidadesCrud";
-import { Domicilio } from "../../types/Domicilio/Domicilio";
 import { Localidad } from "../../types/Domicilio/Localidad";
 import { Pais } from "../../types/Domicilio/Pais";
 import { Provincia } from "../../types/Domicilio/Provincia";
@@ -16,6 +15,9 @@ import { getLocalidadesPorProvinciaId } from "../DomicilioCrud/LocalidadesCrud";
 import { paisesLoader } from "../DomicilioCrud/PaisesCrud";
 import { getProvinciasPorPaisId } from "../DomicilioCrud/ProvinciasCrud";
 import { DomicilioService } from "../../services/DomicilioService";
+import { DomicilioCliente } from "../../types/Domicilio/DomicilioCliente";
+import { useLoaderData } from "react-router-dom";
+import Cliente from "../../types/Cliente";
 
 
 
@@ -30,9 +32,10 @@ export const DomicilioForm = ({ closeModal }: { closeModal: () => void }) => {
     const [localidades, setLocalidades] = useState<Localidad[]>([]);
     const [localidadSelected, setLocalidadSelected] = useState('');
 
+    const cliente = useLoaderData() as Cliente;
     // const [domicilio, setDomicilio] = useState<Domicilio>();
 
-    const [domicilio, setDomicilio] = useState<Domicilio>({
+    const [domicilio, setDomicilio] = useState<DomicilioCliente>({
         calle: '',
         numero: 0,
         cp: 0,
@@ -53,6 +56,7 @@ export const DomicilioForm = ({ closeModal }: { closeModal: () => void }) => {
             },
             eliminado: false
         },
+        idClientes: [cliente.id],
     });
 
     useEffect(() => {
@@ -171,12 +175,12 @@ export const DomicilioForm = ({ closeModal }: { closeModal: () => void }) => {
         }
 
         console.log(domicilio);
-
+        console.log(JSON.stringify(domicilio));
 
         //enviar form
 
         const domicilioService: DomicilioService = new DomicilioService();
-        const newDomicilio = await domicilioService.post(domicilio);
+        const newDomicilio = await domicilioService.createDomicilio(domicilio);
 
         console.log(newDomicilio);
         if(newDomicilio){

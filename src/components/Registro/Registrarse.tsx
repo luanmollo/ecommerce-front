@@ -72,6 +72,7 @@ const Registrarse = () => {
             return;
         }
 
+        console.log(JSON.stringify(usuarioCliente));
         //hacer la llamada al endpoint para registrarse
         //hay que registrar usuariocliente
 
