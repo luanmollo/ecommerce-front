@@ -236,6 +236,8 @@ export const PedidoFormulario = () => {
         if (aux != undefined) {
             setNewPedido(aux);
 
+            localStorage.setItem("pedidoId", String(aux.id));
+
             if (formData.paymentMethod === "mercadoPago") {
                 var mpId = await service.getPreferenceMP(aux);
                 setMercadoPagoID(mpId);
