@@ -1,41 +1,60 @@
 import { Container } from 'react-bootstrap'
 import { useState } from 'react';
-import Usuario from '../../types/Usuario'
-import LoginService from '../../services/LoginService';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RegistroService from '../../services/RegistroService';
+import UsuarioCliente from '../../types/UsuarioCliente';
 
 const Registrarse = () => {
     const navigate = useNavigate();
-    const [usuario, setUsuario] = useState<Usuario>(new Usuario());
+    const [usuarioCliente, setUsuarioCliente] = useState<UsuarioCliente>(new UsuarioCliente());
     const [txtValidacion, setTxtValidacion] = useState<string>("");
 
 
     const registrarse = async () => {
 
         //pasos para registrarse
-        console.log(usuario)
+        console.log(usuarioCliente);
 
         // if (usuario?.rol == undefined || usuario?.rol === "") {
         //     setTxtValidacion("Ingrese el rol");
         //     return;
         // }
 
-        if (usuario?.email == undefined || usuario?.email === "") {
+        if (usuarioCliente?.email == undefined || usuarioCliente?.email === "") {
             setTxtValidacion("Ingrese el nombre de usuario");
             return;
         }
-        if (usuario?.claveEncriptada == undefined || usuario?.claveEncriptada === "") {
+        if (usuarioCliente?.claveEncriptada == undefined || usuarioCliente?.claveEncriptada === "") {
             setTxtValidacion("Ingrese la clave");
             return;
         }
 
+        if (usuarioCliente?.nombre == undefined || usuarioCliente?.nombre === "") {
+            setTxtValidacion("Ingrese el nombre");
+            return;
+        }
+
+        if (usuarioCliente?.apellido == undefined || usuarioCliente?.apellido === "") {
+            setTxtValidacion("Ingrese el apellido");
+            return;
+        }
+
+        if (usuarioCliente?.fechaNacimiento == undefined) {
+            setTxtValidacion("Ingrese la fecha de nacimiento");
+            return;
+        }
+
+        if (usuarioCliente?.telefono == undefined || usuarioCliente?.telefono === "") {
+            setTxtValidacion("Ingrese el teléfono");
+            return;
+        }
 
         //hacer la llamada al endpoint para registrarse
+        //hay que registrar usuariocliente
 
-        RegistroService.addUsuario(usuario)
+        RegistroService.addUsuarioCliente(usuarioCliente)
             .then(usuarioCreado => {
                 console.log('Usuario creado:', usuarioCreado);
                 alert("Usuario creado exitosamente!");
@@ -59,23 +78,12 @@ const Registrarse = () => {
 
     return (
         <>
+            {/* 
             <Container className="d-flex justify-content-center align-items-center vh-100">
                 <div className="border p-4 bg-light shadow-sm rounded" style={{ width: '100%', maxWidth: '400px' }}>
                     <h2 className="text-center mb-4">Registrarse</h2>
                     <Form style={{ display: 'flex', flexDirection: 'column' }}>
-                        {/* <Form.Group controlId="roleSelect">
-                            <Form.Label>Rol</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={usuario.rol}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="" disabled>--Selecciona un rol--</option>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </Form.Control>
-                        </Form.Group> */}
+                        
                         <Form.Group controlId="usuario">
                             <Form.Label>Usuario</Form.Label>
                             <Form.Control
@@ -103,6 +111,80 @@ const Registrarse = () => {
                     </Form>
                 </div>
             </Container>
+             */}
+
+
+            <Container className="d-flex justify-content-center align-items-center vh-100">
+                <div className="border p-4 bg-light shadow-sm rounded" style={{ width: '100%', maxWidth: '400px' }}>
+                    <h2 className="text-center mb-4">Registrarse</h2>
+                    <Form style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Form.Group controlId="usuario">
+                            <Form.Label>Usuario</Form.Label>
+                            <Form.Control
+                                type="text"
+                                defaultValue={usuarioCliente.email}
+                                onChange={e => usuarioCliente.email = String(e.target.value)}
+                                placeholder="Ingresa un nombre de usuario"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="contraseña" className="mt-3">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control
+                                type="password"
+                                defaultValue={usuarioCliente.claveEncriptada}
+                                onChange={e => usuarioCliente.claveEncriptada = String(e.target.value)}
+                                placeholder="Ingresa una contraseña"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="nombre" className="mt-3">
+                            <Form.Label>Nombre</Form.Label>
+                            <Form.Control
+                                type="text"
+                                defaultValue={usuarioCliente.nombre}
+                                onChange={e => usuarioCliente.nombre = String(e.target.value)}
+                                placeholder="Ingresa tu nombre"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="apellido" className="mt-3">
+                            <Form.Label>Apellido</Form.Label>
+                            <Form.Control
+                                type="text"
+                                defaultValue={usuarioCliente.apellido}
+                                onChange={e => usuarioCliente.apellido = String(e.target.value)}
+                                placeholder="Ingresa tu apellido"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="fechaNacimiento" className="mt-3">
+                            <Form.Label>Fecha de Nacimiento</Form.Label>
+                            <Form.Control
+                                type="date"
+                                onChange={(e) => {
+                                    const selectedDate = new Date(e.target.value);
+                                    setUsuarioCliente({ ...usuarioCliente, fechaNacimiento: selectedDate });
+                                }}
+                                placeholder="Ingresa tu fecha de nacimiento"
+                            />
+
+                        </Form.Group>
+                        <Form.Group controlId="telefono" className="mt-3">
+                            <Form.Label>Teléfono</Form.Label>
+                            <Form.Control
+                                type="text"
+                                defaultValue={usuarioCliente.telefono}
+                                onChange={e => usuarioCliente.telefono = String(e.target.value)}
+                                placeholder="Ingresa tu teléfono"
+                            />
+                        </Form.Group>
+                        <Button onClick={registrarse} type="button" className="w-100 mt-4">
+                            Registrarse
+                        </Button>
+                        <div>
+                            <p style={{ color: 'red', lineHeight: 5, padding: 5 }}>{txtValidacion}</p>
+                        </div>
+                    </Form>
+                </div>
+            </Container>
+
         </>
     )
 }

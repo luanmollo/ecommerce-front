@@ -1,11 +1,11 @@
-import Usuario from "../types/Usuario";
+import UsuarioCliente from "../types/UsuarioCliente";
 
 const BASE_URL = "http://localhost:8092/";
 
 export const RegistroService = {
 
     //registrar usuario
-    addUsuario: async (user: Usuario): Promise<Usuario> => {
+    addUsuarioCliente: async (user: UsuarioCliente): Promise<UsuarioCliente> => {
         const response = await fetch(`${BASE_URL}usuarios/create`, {
             method: 'POST',
             headers: {
