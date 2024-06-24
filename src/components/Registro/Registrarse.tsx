@@ -4,13 +4,34 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RegistroService from '../../services/RegistroService';
-import UsuarioCliente from '../../types/UsuarioCliente';
+import UsuarioCliente from '../../types/UsuarioClienteJSON';
+import UsuarioClienteJSON from '../../types/UsuarioClienteJSON';
 
 const Registrarse = () => {
     const navigate = useNavigate();
-    const [usuarioCliente, setUsuarioCliente] = useState<UsuarioCliente>(new UsuarioCliente());
+    const [usuarioCliente, setUsuarioCliente] = useState<UsuarioClienteJSON>(new UsuarioClienteJSON());
     const [txtValidacion, setTxtValidacion] = useState<string>("");
 
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUsuarioCliente({
+          ...usuarioCliente,
+          usuarioCliente: {
+            ...usuarioCliente.usuarioCliente!,
+            email: e.target.value
+          }
+        });
+      };
+    
+      const handleClaveEncriptadaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUsuarioCliente({
+          ...usuarioCliente,
+          usuarioCliente: {
+            ...usuarioCliente.usuarioCliente!,
+            claveEncriptada: e.target.value
+          }
+        });
+      };
 
     const registrarse = async () => {
 
@@ -22,11 +43,11 @@ const Registrarse = () => {
         //     return;
         // }
 
-        if (usuarioCliente?.email == undefined || usuarioCliente?.email === "") {
+        if (usuarioCliente?.usuarioCliente?.email == undefined || usuarioCliente?.usuarioCliente?.email === "") {
             setTxtValidacion("Ingrese el nombre de usuario");
             return;
         }
-        if (usuarioCliente?.claveEncriptada == undefined || usuarioCliente?.claveEncriptada === "") {
+        if (usuarioCliente?.usuarioCliente?.claveEncriptada == undefined || usuarioCliente?.usuarioCliente?.claveEncriptada === "") {
             setTxtValidacion("Ingrese la clave");
             return;
         }
@@ -122,8 +143,8 @@ const Registrarse = () => {
                             <Form.Label>Usuario</Form.Label>
                             <Form.Control
                                 type="text"
-                                defaultValue={usuarioCliente.email}
-                                onChange={e => usuarioCliente.email = String(e.target.value)}
+                                defaultValue={usuarioCliente.usuarioCliente?.email}
+                                onChange={handleEmailChange}
                                 placeholder="Ingresa un nombre de usuario"
                             />
                         </Form.Group>
@@ -131,8 +152,8 @@ const Registrarse = () => {
                             <Form.Label>Contraseña</Form.Label>
                             <Form.Control
                                 type="password"
-                                defaultValue={usuarioCliente.claveEncriptada}
-                                onChange={e => usuarioCliente.claveEncriptada = String(e.target.value)}
+                                defaultValue={usuarioCliente.usuarioCliente?.claveEncriptada}
+                                onChange={handleClaveEncriptadaChange}
                                 placeholder="Ingresa una contraseña"
                             />
                         </Form.Group>
