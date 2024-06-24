@@ -6,7 +6,7 @@ export const RegistroService = {
 
     //registrar usuario
     addUsuarioCliente: async (user: UsuarioClienteJSON): Promise<UsuarioClienteJSON> => {
-        const response = await fetch(`${BASE_URL}usuarios/create`, {
+        const response = await fetch(`${BASE_URL}clientes/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
