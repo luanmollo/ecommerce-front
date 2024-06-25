@@ -8,6 +8,7 @@ import formatPrice from "../../types/format/priceFormat"
 import { calcularTotal } from "../../types/Pedidos/Pedido"
 import { useState } from "react"
 import Usuario from "../../types/Usuario"
+import { Articulo } from "../../types/Articulos/Articulo"
 
 export const Carrito = () => {
   const carrito = useCarrito();
@@ -18,6 +19,7 @@ export const Carrito = () => {
   const usuarioLogueado: Usuario = JSON.parse(jsonUsuario) as Usuario;
 
 
+  console.log(carrito);
   return (
     <>
 
@@ -55,26 +57,52 @@ export const Carrito = () => {
                       </Row>
                       {
                         carrito.cart.map((detalle: DetallePedido, index: number) =>
-                          <Row key={index}>
-                            <Col>
-                              {detalle.articulo.codigo}
-                            </Col>
-                            <Col>
-                              {detalle.articulo.denominacion}
-                            </Col>
-                            <Col>
-                              {detalle.cantidad}
-                            </Col>
-                            <Col>
-                              {formatPrice(detalle.subTotal)}
-                            </Col>
-                            <Col>
-                              <Button className="mb-3" variant="danger" onClick={() => carrito.removeItemCart(detalle)}>
-                                Quitar del carrito
-                              </Button>
-                            </Col>
-                            <hr />
-                          </Row>
+                          // detalle.articulo ?
+                            <Row key={index}>
+                              <Col>
+                                {detalle.articulo ? detalle.articulo.codigo : ""}
+                              </Col>
+                              <Col>
+                                {detalle.articulo ? detalle.articulo.denominacion : "Promo " + detalle.promocion?.denominacion}
+                              </Col>
+                              <Col>
+                                {detalle.cantidad}
+                              </Col>
+                              <Col>
+                                {formatPrice(detalle.subTotal)}
+                              </Col>
+                              <Col>
+                                <Button className="mb-3" variant="danger" onClick={() => carrito.removeItemCart(detalle)}>
+                                  Quitar del carrito
+                                </Button>
+                              </Col>
+                              <hr />
+                            </Row>
+
+                            // :
+                            // detalle.promocion?.promocionDetalles.map((articulo: Articulo, index: number) =>
+                            //   <Row key={index}>
+                            //     <Col>
+                            //       {articulo.codigo}
+                            //     </Col>
+                            //     <Col>
+                            //       {articulo.denominacion}
+                            //     </Col>
+                            //     <Col>
+                            //       {detalle.cantidad}
+                            //     </Col>
+                            //     <Col>
+                            //       {formatPrice(detalle)}
+                            //     </Col>
+                            //     <Col>
+                            //       <Button className="mb-3" variant="danger" onClick={() => carrito.removeItemCart(detalle)}>
+                            //         Quitar del carrito
+                            //       </Button>
+                            //     </Col>
+                            //     <hr />
+                            //   </Row>
+                            // )
+
                         )
                       }
                       <Row className={styles.row}>

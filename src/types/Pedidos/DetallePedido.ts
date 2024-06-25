@@ -1,11 +1,13 @@
 import { ArticuloInsumo } from "../Articulos/ArticuloInsumo";
 import { ArticuloManufacturado } from "../Articulos/ArticuloManufacturado";
 import { Base } from "../Base";
+import { Promo } from "../Promos/Promo";
 
 export interface DetallePedido extends Base {
     cantidad: number,
     subTotal: number,
-    articulo: ArticuloInsumo | ArticuloManufacturado
+    articulo: ArticuloInsumo | ArticuloManufacturado | undefined,
+    promocion: Promo | undefined
 }
 
 export interface DetallePedidoPost {
@@ -14,5 +16,13 @@ export interface DetallePedidoPost {
 }
 
 export function calcularSubtotal(detalle: DetallePedido): number {
-    return detalle.articulo.precioVenta * detalle.cantidad;
+    if (detalle?.articulo) {
+
+        return detalle.articulo.precioVenta * detalle.cantidad;
+    }
+    else {
+        //return detalle.promo.precioPromocional * detalle.cantidad
+    }
+
+    return 0;
 }

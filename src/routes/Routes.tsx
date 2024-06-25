@@ -17,6 +17,9 @@ import RolUsuario from "../controlAcceso/RolUsuario";
 import { Roles } from "../types/Roles";
 import HistorialPedidos from "../components/HistorialPedidos/HistorialPedidos";
 import Usuario from "../types/Usuario";
+import Promos from "../components/Promos/Promos";
+import PromoDetalle from "../components/Promos/PromoDetalle";
+import { PromosService } from "../services/PromosService";
 
 const Sucursales = lazy(() => import("../components/Sucursales/Sucursales"));
 const Menu = lazy(() => import("../components/Menu/Menu"));
@@ -39,6 +42,9 @@ const router = createBrowserRouter(
 
             <Route path="detalle/:id?" element={<DetalleMenu service={new ArticuloManufacturadoService()} />} />
             <Route path="detalle/otro/:id?" element={<DetalleMenu service={new ArticuloInsumoService()} />} />
+
+            <Route path="promos/:id?" element={<Promos />} />
+            <Route path="promosDetalle/:id?" element={<PromoDetalle service={new PromosService()} />} />
 
             <Route>
                 <Route path="carrito" element={<Carrito />} />

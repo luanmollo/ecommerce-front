@@ -21,6 +21,10 @@ export const Promos = () => {
 
     const handleClickPromo = (promo: Promo) => {
         //llevar a pagina detalle promo
+
+        navigate(`/promosDetalle/${promo.id}`)
+
+        
     }
 
     return (
@@ -41,11 +45,14 @@ export const Promos = () => {
                             {promo.denominacion}
                         </div>
                     ))
-                    : null
+                    : 
+                    <div style={{ textAlign: 'center' }}>
+                        <p>No hay promociones disponibles.</p>
+                    </div>
                 }
             </div>
         </div>
     )
 }
 
-export default Menu;
+export default Promos;
