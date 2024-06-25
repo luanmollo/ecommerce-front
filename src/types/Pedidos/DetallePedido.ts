@@ -12,8 +12,11 @@ export interface DetallePedido extends Base {
 
 export interface DetallePedidoPost {
     cantidad: number,
-    idArticulo: number
+    idArticulo: number | undefined
+    idPromocion: number | undefined
 }
+
+
 
 export function calcularSubtotal(detalle: DetallePedido): number {
     if (detalle?.articulo) {

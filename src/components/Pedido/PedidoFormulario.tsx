@@ -20,6 +20,8 @@ import Usuario from "../../types/Usuario";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import { DomicilioForm } from "./DomicilioForm";
 import { DomicilioService } from "../../services/DomicilioService";
+import { Articulo } from "../../types/Articulos/Articulo";
+import { PromoDetalles } from "../../types/Promos/PromoDetalles";
 
 
 
@@ -84,7 +86,7 @@ export const PedidoFormulario = () => {
         async function getDomicilio() {
             const domicilioService = new DomicilioService();
             var domicilio = await domicilioService.getBySucursalId(Number(getSucursal()));
-            
+
             setDomicilioSucursal(domicilio);
         }
 
@@ -106,7 +108,7 @@ export const PedidoFormulario = () => {
             setSection(section + 1);
         }
 
-        console.log(formData.pickup)
+        // console.log(formData.pickup)
     };
 
     const handlePrevSection = () => {
@@ -196,15 +198,25 @@ export const PedidoFormulario = () => {
             domicilioSelected = dom; return dom.id = Number(formData.address);
         })
 
+
         var detalles: DetallePedidoPost[] = [];
-        carrito.cart.forEach((d: DetallePedido) =>
-            detalles.push({ cantidad: d.cantidad, idArticulo: d.articulo.id })
+
+
+        carrito.cart.forEach((d: DetallePedido) => {
+            // console.log(JSON.stringify(d));
+            if (d.articulo != null) {
+                detalles.push({ cantidad: d.cantidad, idArticulo: d.articulo.id, idPromocion: undefined })
+            } else if (d.promocion?.promocionDetalles) {
+                detalles.push({ cantidad: d.cantidad, idArticulo: undefined, idPromocion: d.promocion.id })
+            }
+        }
         );
+
+        // console.log(JSON.stringify(detalles));
 
         if (newTipoEnvio === "DELIVERY" && domicilioSelected != null) {
             var newPedido: PedidoPost = {
-                fechaPedido: new Date(),
-                estadoPedido: "PREPARACION",
+                estadoPedido: "PENDIENTE_PAGO",
                 tipoEnvio: newTipoEnvio,
                 formaPago: newFormaPago,
                 domicilio: domicilioSelected,
@@ -212,12 +224,11 @@ export const PedidoFormulario = () => {
                 idCliente: cliente.id,
                 detallePedidos: detalles
             }
-            console.log(domicilioSelected as Domicilio);
+            // console.log(domicilioSelected as Domicilio);
         } else {
-            console.log("Retiro" + domicilioSucursal);
+            // console.log("Retiro" + domicilioSucursal);
             var newPedido: PedidoPost = {
-                fechaPedido: new Date(),
-                estadoPedido: "PREPARACION",
+                estadoPedido: "PENDIENTE_PAGO",
                 tipoEnvio: newTipoEnvio,
                 formaPago: newFormaPago,
                 domicilio: domicilioSucursal,
@@ -225,7 +236,7 @@ export const PedidoFormulario = () => {
                 idCliente: cliente.id,
                 detallePedidos: detalles
             }
-            console.log(domicilioSucursal?.id);
+            // console.log(domicilioSucursal?.id);
         }
 
 
@@ -390,7 +401,7 @@ export const clienteLoader: LoaderFunction = async ({ params, request }) => {
     const service = new ClienteService();
     var res = await service.getByUserId(idUsuario);
 
-    console.log(res);
+    // console.log(res);
 
     // var res: Cliente = {
     //     id: 1,
