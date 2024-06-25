@@ -40,7 +40,7 @@ const HistorialPedidos = () => {
 
         // Configurar el intervalo para llamar a obtenerPedidos cada 15 minutos
         const intervalId = setInterval(() => {
-            obtenerPedidosByUserId(1);
+            obtenerPedidosByUserId(usuarioLogueado?.id, usuarioLogueado?.email);
         }, 15 * 60 * 1000); // 15 minutos en milisegundos
 
         // Limpiar el intervalo cuando el componente se desmonte
@@ -76,7 +76,7 @@ const HistorialPedidos = () => {
 
                                 //muestro solo los pedidos de ese user
                                 return (
-                                    <HistorialPedidosContent key={pedido.id} estado={pedido.estado} id={pedido.id} fechaPedido={pedido.fechaPedido} horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion} />
+                                    <HistorialPedidosContent key={pedido.id} estado={pedido.estadoPedido} id={pedido.id} fechaPedido={pedido.fechaPedido.toString()} horaEstimadaFinalizacion={pedido.horaEstimadaFinalizacion} />
                                 );
                             })
                             :
