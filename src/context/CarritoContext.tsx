@@ -24,9 +24,23 @@ export function CartContextProvider({ children }: { children: ReactNode }) {
         let exist: boolean = false;
         let i: number = 0;
         cart.forEach((dp: DetallePedido, index: number) => {
-            if (dp.articulo.id === detail.articulo.id) {
-                exist = true;
-                i = index;
+            // if (dp.articulo.id === detail.articulo.id) {
+            //     exist = true;
+            //     i = index;
+            // }
+
+            if (dp.articulo != undefined && detail.articulo != undefined) {
+                if (dp.articulo.id === detail.articulo.id) {
+                    exist = true;
+                    i = index;
+                }
+
+            } else {
+                if (dp.promocion != undefined && detail.promocion != undefined) {
+                    exist = true;
+                    i = index;
+                }
+
             }
         });
 

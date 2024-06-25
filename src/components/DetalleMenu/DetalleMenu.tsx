@@ -49,7 +49,8 @@ export const DetalleMenu: FC<IPropsDetalleMenu> = ({
         eliminado: false,
         cantidad: cantidad,
         subTotal: subTotal,
-        articulo: producto
+        articulo: producto,
+        promocion: undefined
       }
 
       carrito.addItemCart(detalle);
