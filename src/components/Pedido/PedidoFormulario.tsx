@@ -20,6 +20,7 @@ import Usuario from "../../types/Usuario";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import { DomicilioForm } from "./DomicilioForm";
 import { DomicilioService } from "../../services/DomicilioService";
+import { Wallet } from "@mercadopago/sdk-react";
 
 
 
@@ -84,12 +85,11 @@ export const PedidoFormulario = () => {
         async function getDomicilio() {
             const domicilioService = new DomicilioService();
             var domicilio = await domicilioService.getBySucursalId(Number(getSucursal()));
-            
             setDomicilioSucursal(domicilio);
         }
-
+    
         getDomicilio();
-    })
+    }, []); 
 
     const handleNextSection = () => {
         if (section === 2 && (!formData.address)) {
@@ -237,7 +237,7 @@ export const PedidoFormulario = () => {
             setNewPedido(aux);
 
             localStorage.setItem("pedidoId", String(aux.id));
-
+            console.log("aux: "+aux);
             if (formData.paymentMethod === "mercadoPago") {
                 var mpId = await service.getPreferenceMP(aux);
                 setMercadoPagoID(mpId);

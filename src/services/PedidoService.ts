@@ -52,7 +52,10 @@ export class PedidoService extends BackendClient<Pedido> {
     if (!response.ok) {
       return undefined;
     }
+    console.log(response)
     const newData = await response.json();
+    console.log(newData)
     return newData as PreferenceMP;
+    
   }
 }
