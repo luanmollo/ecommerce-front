@@ -42,7 +42,7 @@ export interface PedidoPost {
     estadoPedido: string,
     tipoEnvio: string,
     formaPago: string,
-    fechaPedido: Date,
+    // fechaPedido: Date,
     domicilio?: Domicilio,
     idSucursal: number,
     idCliente: number,

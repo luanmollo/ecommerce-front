@@ -86,6 +86,7 @@ export const Header = () => {
       {getSucursal() ?
         <div className={styles.links}>
           <Link to={`menu/${getSucursal()}`}>Menu</Link>
+          <Link to={`promos/${getSucursal()}`}>Promociones</Link>
           <Link to="carrito">Carrito</Link>
 
           {usuarioLogueado ?

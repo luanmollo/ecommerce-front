@@ -1,13 +1,5 @@
-import { Base } from "../Base";
-import { IImagen } from "../Imagen";
-import { Categoria } from "./Categoria";
+import { Articulo } from "./Articulo";
 
-export interface ArticuloInsumo extends Base {
-    denominacion: string;
-    precioVenta: number;
-    habilitado: boolean;
-    codigo: string;
-    imagenes?: IImagen[];
+export interface ArticuloInsumo extends Articulo {
     esParaElaborar: boolean;
-    categoria: Categoria
 }

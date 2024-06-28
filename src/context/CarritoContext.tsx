@@ -10,29 +10,43 @@ interface CartContextType {
 
 export const CartContext = createContext<CartContextType>({
     cart: [],
-    addItemCart: () => {},
-    removeItemCart: () => {},
-    cleanCart: () => {}
+    addItemCart: () => { },
+    removeItemCart: () => { },
+    cleanCart: () => { }
 });
 
-export function CartContextProvider({ children }: { children: ReactNode }){
-    
+export function CartContextProvider({ children }: { children: ReactNode }) {
+
     const [cart, setCart] = useState<DetallePedido[]>([]);
 
     const addItemCart = async (detail: DetallePedido) => {
         //console.log(cart);
         let exist: boolean = false;
         let i: number = 0;
-        cart.forEach( (dp: DetallePedido, index: number) => {
-            if(dp.articulo.id === detail.articulo.id) {
-                exist = true;
-                i = index;
+        cart.forEach((dp: DetallePedido, index: number) => {
+            // if (dp.articulo.id === detail.articulo.id) {
+            //     exist = true;
+            //     i = index;
+            // }
+
+            if (dp.articulo != undefined && detail.articulo != undefined) {
+                if (dp.articulo.id === detail.articulo.id) {
+                    exist = true;
+                    i = index;
+                }
+
+            } else {
+                if (dp.promocion != undefined && detail.promocion != undefined) {
+                    exist = true;
+                    i = index;
+                }
+
             }
         });
-        
-        if(exist) {
+
+        if (exist) {
             const cartClone = await cart.slice();
-            cartClone.splice(i,1,detail);
+            cartClone.splice(i, 1, detail);
             //cartClone.push();
             setCart(cartClone);
         } else {
@@ -44,18 +58,27 @@ export function CartContextProvider({ children }: { children: ReactNode }){
         //console.log(cart);
         let exist: boolean = false;
         let i: number = 0;
-        cart.forEach( (dp: DetallePedido, index: number) => {
-            if(dp.articulo.id === detail.articulo.id) {
-                exist = true;
-                i = index;
+        cart.forEach((dp: DetallePedido, index: number) => {
+            if (dp.articulo != undefined && detail.articulo != undefined) {
+                if (dp.articulo.id === detail.articulo.id) {
+                    exist = true;
+                    i = index;
+                }
+
+            } else {
+                if (dp.promocion != undefined && detail.promocion != undefined) {
+                    exist = true;
+                    i = index;
+                }
+
             }
         });
 
-        if(exist) {
+        if (exist) {
             const cartClone = cart.slice();
-            cartClone.splice(i,1);
+            cartClone.splice(i, 1);
             await setCart(cartClone);
-        } 
+        }
     };
 
     const cleanCart = () => {
@@ -63,7 +86,7 @@ export function CartContextProvider({ children }: { children: ReactNode }){
     };
 
     return (
-        <CartContext.Provider value={{cart, addItemCart, removeItemCart, cleanCart}}>
+        <CartContext.Provider value={{ cart, addItemCart, removeItemCart, cleanCart }}>
             {children}
         </CartContext.Provider>
     );

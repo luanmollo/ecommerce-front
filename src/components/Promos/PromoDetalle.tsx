@@ -12,18 +12,20 @@ import formatPrice from "../../types/format/priceFormat"
 import { DetallePedido } from "../../types/Pedidos/DetallePedido"
 import { useCarrito } from "../../hooks/useCarrito"
 import Usuario from "../../types/Usuario"
+import { PromosService } from "../../services/PromosService"
+import { Promo } from "../../types/Promos/Promo"
 
-interface IPropsDetalleMenu {
-  service: ArticuloManufacturadoService | ArticuloInsumoService
+interface IPropsPromoDetalle {
+  service: PromosService
 }
 
-export const DetalleMenu: FC<IPropsDetalleMenu> = ({
+export const PromoDetalle: FC<IPropsPromoDetalle> = ({
   service
 }) => {
   const { id } = useParams();
   const carrito = useCarrito();
 
-  const [producto, setProducto] = useState<ArticuloManufacturado | ArticuloInsumo | null>(null);
+  const [producto, setProducto] = useState<Promo | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [cantidad, setCantidad] = useState<number>(1);
 
@@ -42,15 +44,15 @@ export const DetalleMenu: FC<IPropsDetalleMenu> = ({
 
   const handleAddToCart = () => {
     if (producto) {
-      var subTotal = producto?.precioVenta * cantidad;
+      var subTotal = producto?.precioPromocional * cantidad;
       //console.log(subTotal)
       var detalle: DetallePedido = {
         id: 0,
         eliminado: false,
         cantidad: cantidad,
         subTotal: subTotal,
-        articulo: producto,
-        promocion: undefined
+        articulo: undefined,
+        promocion: producto
       }
 
       carrito.addItemCart(detalle);
@@ -86,8 +88,8 @@ export const DetalleMenu: FC<IPropsDetalleMenu> = ({
                     <GenericGallery imagenes={producto?.imagenes}></GenericGallery>
                   </Col>
                   <Col>
-                    {"descripcion" in producto ? producto.descripcion : null}<br />
-                    <p className={styles.price}>{formatPrice(producto?.precioVenta)}</p>
+                    {"descripcion" in producto ? producto.denominacion : null}<br />
+                    <p className={styles.price}>{formatPrice(producto?.precioPromocional)}</p>
                     {
                       (usuarioLogueado) ?
                         <div>
@@ -134,4 +136,4 @@ export const DetalleMenu: FC<IPropsDetalleMenu> = ({
   )
 }
 
-export default DetalleMenu;
+export default PromoDetalle;
