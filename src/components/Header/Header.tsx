@@ -62,11 +62,18 @@ export const Header = () => {
     navigate("/");
   }
 
+
+  // menu
+  
+
+
   return (
     <div className={styles.header}>
       <div className={styles.brand} onClick={handleBrandClick}>
         <img className={styles.logo} src={logo} />
-        El Buen Sabor
+        <h4 className={styles.title}>
+          El Buen Sabor
+        </h4>
       </div>
       {/*getEmpresa() != null ?
           <div className={styles.selectBox}>
@@ -84,14 +91,14 @@ export const Header = () => {
           : null
             */}
       {getSucursal() ?
-        <div className={styles.links}>
-          <Link to={`menu/${getSucursal()}`}>Menu</Link>
-          <Link to={`promos/${getSucursal()}`}>Promociones</Link>
-          <Link to="carrito">Carrito</Link>
+        <div className={styles.links && styles.menu}>
+          <Link className={styles.menuItem} to={`menu/${getSucursal()}`}>Menu</Link>
+          <Link className={styles.menuItem} to={`promos/${getSucursal()}`}>Promociones</Link>
+          <Link className={styles.menuItem} to="carrito">Carrito</Link>
 
           {usuarioLogueado ?
             <>
-              <Link to="historialpedidos">Pedidos</Link>
+              <Link className={styles.menuItem} to="historialpedidos">Pedidos</Link>
             </>
             :
             null
@@ -101,7 +108,7 @@ export const Header = () => {
         : null
       }
 
-      <div id='header_right'>
+      <div id='header_right' className={styles.menu}>
         {
           usuarioLogueado ?
             <div id='login_section'>
@@ -121,6 +128,10 @@ export const Header = () => {
               </button>
             </div>
         }
+      </div>
+
+      <div className={styles.menuHamburguesa}>
+        <button>menu</button>
       </div>
     </div>
   )

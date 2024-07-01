@@ -20,6 +20,7 @@ import Usuario from "../types/Usuario";
 import Promos from "../components/Promos/Promos";
 import PromoDetalle from "../components/Promos/PromoDetalle";
 import { PromosService } from "../services/PromosService";
+import BurgerMenu from "../components/Header/BurguerMenu";
 
 const Sucursales = lazy(() => import("../components/Sucursales/Sucursales"));
 const Menu = lazy(() => import("../components/Menu/Menu"));
