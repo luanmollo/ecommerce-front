@@ -10,6 +10,8 @@
     position: sticky;
     top: 0;
     left: 0;
+
+    z-index: 100;
 }
 
 .header .links {
@@ -65,6 +67,12 @@
     display: none;
 }
 
+.brandContent{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 
 @media (max-width: 1250px) {
 
@@ -72,13 +80,52 @@
         width: 40px;
     }
 
+    .loginSection{
+        display: flex;
+        flex-direction: column;
+    }
+
 
     .menu {
         display: none;
+        flex-direction: column !important;
+        align-self: flex-end;
+        margin: 10px 0 10px 0;
     }
 
 
     .menuHamburguesa {
         display: block;
     }
+
+    .header {
+        flex-direction: column;
+    }
+
+    .brand {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    .brandContent{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+    }
+
+    .menuActivo{
+        display: flex;
+    }
+
+    .menuInactivo{
+        display: none;
+        
+    }
+  
+    
 }

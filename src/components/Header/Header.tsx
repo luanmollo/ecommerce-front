@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Roles } from "../../types/Roles";
 import Usuario from "../../types/Usuario";
 import { Nav } from "react-bootstrap";
+import { cilHamburgerMenu } from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
 /*import { Form } from "react-bootstrap"
 import { useEffect, useState } from "react"
 import { Sucursal } from "../../types/Empresa/Sucursal"
@@ -64,16 +66,26 @@ export const Header = () => {
 
 
   // menu
-  
 
+  const [menuActive, setmenuActive] = useState(false);
+
+  const handleMenuClick = () => {
+    setmenuActive(!menuActive);
+  };
 
   return (
     <div className={styles.header}>
-      <div className={styles.brand} onClick={handleBrandClick}>
-        <img className={styles.logo} src={logo} />
-        <h4 className={styles.title}>
-          El Buen Sabor
-        </h4>
+      <div className={styles.brand} >
+        <div className={styles.brandContent} onClick={handleBrandClick}>
+          <img className={styles.logo} src={logo} />
+          <h4 className={styles.title}>
+            El Buen Sabor
+          </h4>
+        </div>
+
+        <div className={styles.menuHamburguesa} onClick={handleMenuClick}>
+          <CIcon icon={cilHamburgerMenu} />
+        </div>
       </div>
       {/*getEmpresa() != null ?
           <div className={styles.selectBox}>
@@ -91,7 +103,7 @@ export const Header = () => {
           : null
             */}
       {getSucursal() ?
-        <div className={styles.links && styles.menu}>
+        <div className={`${styles.menu} ${menuActive ? styles.menuActivo : styles.menuInactivo}`}>
           <Link className={styles.menuItem} to={`menu/${getSucursal()}`}>Menu</Link>
           <Link className={styles.menuItem} to={`promos/${getSucursal()}`}>Promociones</Link>
           <Link className={styles.menuItem} to="carrito">Carrito</Link>
@@ -108,10 +120,10 @@ export const Header = () => {
         : null
       }
 
-      <div id='header_right' className={styles.menu}>
+      <div id='header_right' className={`${styles.menu} ${menuActive ? styles.menuActivo : styles.menuInactivo}`}>
         {
           usuarioLogueado ?
-            <div id='login_section'>
+            <div id='login_section' className={styles.loginSection}>
               <div id='user_div'>
                 Usuario:
                 {usuarioLogueado?.email} - {usuarioLogueado?.rol == Roles.ADMIN ? "Admin" : "Cliente"}
@@ -130,9 +142,7 @@ export const Header = () => {
         }
       </div>
 
-      <div className={styles.menuHamburguesa}>
-        <button>menu</button>
-      </div>
-    </div>
+
+    </div >
   )
 }
